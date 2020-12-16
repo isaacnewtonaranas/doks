@@ -126,71 +126,79 @@ export default {
         {
           type:"dropdown",
           dropdown:{
-            selected:1,
+            selected:2,
+            defaultBtn:0,
             btnColor:"primary",
             placeholder:"Status",
-            data:[
+            caption:"Last saved on 1:12pm, 20 Sep",
+            selection:[
               {
-                commandTitle:"Publish",
-                title:"Published",
-                caption:"Last saved on 1:12pm, 20 Sep",
-                captionHideOnSelection:true,
-                icon:"save",
-                iconBgColor:"primary",
-                iconTextColor:"white",
-                miniIcon:"info",
-                miniIconBgColor:"primary"
+                name:"publish",
+                statusText:"Published",
+                label:"Publish",
+                icon:"publish"
               },
               {
-                commandTitle:"Save Draft",
-                title:"Draft",
-                caption:"Last saved on 1:12pm, 20 Sep",
-                icon:"build",
-                iconBgColor:"grey-5",
-                iconTextColor:"white",
-                miniIcon:"info",
-                miniIconBgColor:"grey-5"
-              }
+                name:"publish-on",
+                statusText:"Scheduled",
+                label:"Publish On",
+                icon:"pending_actions"
+              },
+              {
+                name:"save-for-review",
+                statusText:"Draft",
+                label:"Save For Review",
+                icon:"grading",
+                separator:true
+              },
+              {
+                name:"archive",
+                statusText:"Archived",
+                label:"Archive",
+                icon:"archive"
+              },
+              {
+                name:"delete",
+                statusText:"Deleted",
+                label:"Delete",
+                icon:"delete"
+              },
             ]
           }
         },
         {
           type:"dropdown",
           dropdown:{
-            selected:1,
+            selected:3,
+            defaultBtn:1,
             btnColor:"primary",
-            placeholder:"Status",
-            data:[
+            placeholder:"Visibility",
+            caption:"Marketing, Finance, Legal",
+            selection:[
               {
-                commandTitle:"Make Public",
-                title:"Public",
-                caption:"Anyone can see this document",
-                icon:"public",
-                iconBgColor:"primary",
-                iconTextColor:"white",
-                miniIcon:"info",
-                miniIconBgColor:"primary"
+                name:"you",
+                statusText:"You",
+                label:"You",
+                icon:"lock"
               },
               {
-                commandTitle:"Specific Groups Only",
-                title:"Group",
-                caption:"Marketing, Finance, Legal",
-                icon:"groups",
-                iconBgColor:"grey-5",
-                iconTextColor:"white",
-                miniIcon:"info",
-                miniIconBgColor:"grey-5"
+                name:"public",
+                statusText:"Public",
+                label:"Public",
+                icon:"public"
               },
               {
-                commandTitle:"Make Private",
-                title:"Private",
-                caption:"Only you can see this document",
-                icon:"lock",
-                iconBgColor:"grey-5",
-                iconTextColor:"white",
-                miniIcon:"info",
-                miniIconBgColor:"grey-5"
-              }
+                name:"users",
+                statusText:"Users",
+                label:"Users",
+                icon:"person_add"
+              },
+              {
+                name:"groups",
+                statusText:"Groups",
+                label:"Groups",
+                icon:"groups"
+              },
             ]
           }
         },

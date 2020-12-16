@@ -1,28 +1,32 @@
 <template>
   <div class="side-panel-item col-md-12">
     <span v-if="item.type=='dropdown'">
-      <div class="text-subtitle1">{{item.dropdown.placeholder}}: {{item.dropdown.data[item.dropdown.selected].title}}</div>
-      <div class="text-caption text-grey">{{item.dropdown.data[item.dropdown.selected].caption}}</div>
+      <div class="text-subtitle1">{{item.dropdown.placeholder}}: {{item.dropdown.selection[item.dropdown.selected].statusText}}</div>
+      <div class="text-caption text-grey">{{item.dropdown.caption}}</div>
       <q-btn-dropdown
         split
         class="glossy"
         :color="item.dropdown.btnColor"
-        :label="item.dropdown.data[0].title"
+        :label="item.dropdown.selection[item.dropdown.defaultBtn].label"
         @click="onMainClick"
       >
         <q-list>
-          <q-item v-for="(selection,i) in item.dropdown.data" :key="i" clickable v-close-popup @click="onItemClick">
-            <q-item-section avatar>
-              <q-avatar :icon="selection.icon" :color="selection.iconBgColor" :text-color="selection.iconTextColor" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label>{{selection.commandTitle}}</q-item-label>
-              <q-item-label v-if="!selection.captionHideOnSelection" caption>{{selection.caption}}</q-item-label>
-            </q-item-section>
-            <q-item-section side>
-              <q-icon :name="selection.miniIcon" :color="selection.miniIconBgColor" />
-            </q-item-section>
-          </q-item>
+          <span v-for="(selection,i) in item.dropdown.selection" :key="i">
+            <q-item
+              clickable
+              v-ripple
+              :active="link === selection.name"
+              @click="link = selection.name"
+              active-class="my-menu-link"
+            >
+              <q-item-section avatar>
+                <q-icon :name="selection.icon" />
+              </q-item-section>
+              <q-item-section>{{selection.label}}</q-item-section>
+            </q-item>
+            <q-separator v-if="selection.separator" spaced />
+          </span>
+
         </q-list>
       </q-btn-dropdown>
     </span>
@@ -62,18 +66,18 @@ export default {
           color:"primary"
         },
         dropdown:{
-          placeholder:"",
           selected:0,
+          defaultBtn:0,
           btnColor:"",
-          data:[{
-              title:"",
-              caption:"",
-              captionHideOnSelection:false,
+          placeholder:"",
+          caption:"",
+          selection:[
+            {
+              name:"",
+              statusText:"",
+              label:"",
               icon:"",
-              iconBgColor:"",
-              iconTextColor:"",
-              miniIcon:"",
-              miniIconBgColor:""
+              separator:false
             }
           ]
         }
@@ -84,6 +88,7 @@ export default {
     return {
       tab: 'edit-article',
       right: false,
+      link: 'inbox',
       text:""
     }
   },
