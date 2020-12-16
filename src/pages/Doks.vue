@@ -88,7 +88,6 @@
         </q-tab-panels>
       </div>
     </div>
-
     <q-drawer show-if-above v-model="right" side="right">
       <div class="side-panel row">
         <div class="side-panel-top col-md-12">
@@ -121,7 +120,6 @@ export default {
       showRightDrawerButton:false,
       tab: 'edit-article',
       right: false,
-      text:"",
       sidePanelItems:[
         {
           type:"dropdown",
@@ -142,7 +140,50 @@ export default {
                 name:"publish-on",
                 statusText:"Scheduled",
                 label:"Publish On",
-                icon:"pending_actions"
+                icon:"pending_actions",
+                onModal:{
+                  type:"radio",
+                  header:"Please select from options below:",
+                  radios:{
+                    name:"publish-type",
+                    inputType:"date",
+                    options:[
+                      {
+                        label:"Publish on",
+                        value:"publish-on",
+                        model:{}
+                      },
+                      {
+                        dateType:"range",
+                        label:"Publish between",
+                        value:"publish-between",
+                        model:{}
+                      }
+                    ]
+                  },
+                  footer:[
+                    {
+                      type:"button",
+                      label:"clear",
+                      color:"grey-4",
+                      actions:[
+                        {
+                          name:"clear"
+                        }
+                      ]
+                    },
+                    {
+                      type:"button",
+                      label:"save",
+                      color:"primary",
+                      actions:[
+                        {
+                          name:"save"
+                        }
+                      ]
+                    }
+                  ]
+                }
               },
               {
                 name:"save-for-review",
@@ -223,13 +264,7 @@ export default {
     }
   },
   methods:{
-    onMainClick () {
-      // console.log('Clicked on main button')
-    },
 
-    onItemClick () {
-      // console.log('Clicked on an Item')
-    }
   }
 }
 </script>
