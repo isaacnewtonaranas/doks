@@ -243,22 +243,19 @@ export default {
                   type:"radio",
                   header:"Please select from options below:",
                   radios:{
-                    name:"publish-type",
-                    inputType:"select",
+                    name:"users-groups",
                     options:[
                       {
-                        label:"Publish on",
-                        value:"publish-on",
+                        inputType:"select",
+                        label:"Users",
+                        value:"users",
                         model:{}
                       },
                       {
-                        dateType:"range",
-                        label:"Publish between",
-                        value:"publish-between",
-                        model:{
-                          from:"",
-                          to:""
-                        }
+                        inputType:"select",
+                        label:"Groups",
+                        value:"groups",
+                        model:{}
                       }
                     ]
                   },
@@ -290,54 +287,7 @@ export default {
                 name:"groups",
                 statusText:"Groups",
                 label:"Groups",
-                icon:"groups",
-                onModal:{
-                  type:"radio",
-                  header:"Please select from options below:",
-                  radios:{
-                    name:"publish-type",
-                    inputType:"date",
-                    col:2,
-                    options:[
-                      {
-                        label:"Publish on",
-                        value:"publish-on",
-                        model:{}
-                      },
-                      {
-                        dateType:"range",
-                        label:"Publish between",
-                        value:"publish-between",
-                        model:{
-                          from:"",
-                          to:""
-                        }
-                      }
-                    ]
-                  },
-                  footer:[
-                    {
-                      type:"button",
-                      label:"clear",
-                      color:"grey-4",
-                      actions:[
-                        {
-                          name:"clear"
-                        }
-                      ]
-                    },
-                    {
-                      type:"button",
-                      label:"save",
-                      color:"primary",
-                      actions:[
-                        {
-                          name:"save"
-                        }
-                      ]
-                    }
-                  ]
-                }
+                icon:"groups"
               },
             ]
           }

@@ -131,6 +131,16 @@
                     </q-item-label>
                   </q-item-section>
                 </template>
+                <template v-if="radio.inputType=='select'">
+                  <q-item-section avatar top>
+                    <q-radio v-model="modal.content.radios.name" :val="radio.value" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      <span class="text-body1">{{radio.label}}</span>
+                    </q-item-label>
+                  </q-item-section>
+                </template>
               </q-item>
             </q-list>
           </div>
@@ -180,11 +190,10 @@ export default {
                   header:"",
                   radios:{
                     name:"",
-                    inputType:"",
-                    dateFormType:"",
-                    col:1,
                     options:[
                       {
+                        inputType:"",
+                        dateFormType:"",
                         dateType:"",
                         label:"",
                         value:"",
