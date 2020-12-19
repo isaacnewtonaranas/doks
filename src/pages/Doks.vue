@@ -147,6 +147,7 @@ export default {
                   radios:{
                     name:"publish-type",
                     inputType:"date",
+                    dateFormType:"boxy",
                     options:[
                       {
                         label:"Publish on",
@@ -157,7 +158,10 @@ export default {
                         dateType:"range",
                         label:"Publish between",
                         value:"publish-between",
-                        model:{}
+                        model:{
+                          from:"",
+                          to:""
+                        }
                       }
                     ]
                   },

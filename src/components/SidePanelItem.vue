@@ -25,7 +25,6 @@
             </q-item>
             <q-separator v-if="selection.separator" spaced />
           </span>
-
         </q-list>
       </q-btn-dropdown>
     </span>
@@ -52,10 +51,9 @@
             <q-tooltip>Close</q-tooltip>
           </q-btn>
         </q-bar> 
-
         <q-card-section>
           <p class="text-body1 text-weight-bold">{{modal.content.header}}</p>
-          <span v-if="modal.content.type=='radio'">
+          <span v-if="modal.content.radios.dateFormType=='boxy'">
             <div class="row">
               <q-list v-if="modal.content.radios.inputType=='date'"  class="col-12">
                 <q-item v-ripple v-for="(radio,i) in modal.content.radios.options" :key="i">
@@ -66,7 +64,7 @@
                     <q-item-label>
                       <span class="text-body1">{{radio.label}}</span>
                     </q-item-label>
-                    <q-item-label caption>
+                    <q-item-label caption>  
                       <q-date landscape v-model="radio.model" :range="radio.dateType=='range'" />
                     </q-item-label>
                   </q-item-section>
@@ -74,17 +72,87 @@
               </q-list>
             </div>
           </span>
+          <span v-else>
+            <div class="row">
+              <q-list v-if="modal.content.radios.inputType=='date'"  class="col-12">
+                <q-item v-ripple v-for="(radio,i) in modal.content.radios.options" :key="i">
+                  <q-item-section avatar top>
+                    <q-radio v-model="modal.content.radios.name" :val="radio.value" />
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label>
+                      <span class="text-body1">{{radio.label}}</span>
+                    </q-item-label>
+                    <q-item-label>  
+                      <span v-if="radio.dateType=='range'">
+                        <div class="row q-gutter-md">
+                          <div class="col-5">
+                            <q-input v-model="radio.model.from" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                              <template v-slot:append>
+                                <q-icon name="event" class="cursor-pointer">
+                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="radio.model.from">
+                                      <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                      </div>
+                                    </q-date>
+                                  </q-popup-proxy>
+                                </q-icon>
+                              </template>
+                            </q-input>
+                          </div>
+                          <div class="col-5">
+                            <q-input v-model="radio.model.to" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                              <template v-slot:append>
+                                <q-icon name="event" class="cursor-pointer">
+                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="radio.model.to">
+                                      <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                      </div>
+                                    </q-date>
+                                  </q-popup-proxy>
+                                </q-icon>
+                              </template>
+                            </q-input>
+                          </div>
+                        </div>
+                      </span>
+                      <span v-else>
+                        <div class="row">
+                          <div class="col-5">
+                            <q-input v-model="radio.model" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                              <template v-slot:append>
+                                <q-icon name="event" class="cursor-pointer">
+                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                    <q-date v-model="radio.model">
+                                      <div class="row items-center justify-end">
+                                        <q-btn v-close-popup label="Close" color="primary" flat />
+                                      </div>
+                                    </q-date>
+                                  </q-popup-proxy>
+                                </q-icon>
+                              </template>
+                            </q-input>
+                          </div>
+                        </div>
+                      </span>
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+              </q-list>
+            </div>
+          </span>
         </q-card-section>
-        
         <q-card-actions v-if="modal.content.footer" align="right" class="bg-white">
-          <q-btn label="Clear" color="primary" @click="secondDialog = true" />
-          <q-btn label="Save" color="primary" v-close-popup />
+          <span :key="i" v-for="(footer,i) in modal.content.footer">
+            <q-btn :label="footer.label" @click="modalFooter(footer.actions)" :color="footer.color" class="q-mr-sm" />
+          </span>
         </q-card-actions>
       </q-card>
     </q-dialog>
   </div>
 </template>
-
 <script>
 export default {
   props: {
@@ -127,7 +195,10 @@ export default {
                         dateType:"",
                         label:"",
                         value:"",
-                        model:{}
+                        model:{
+                          from:"",
+                          to:""
+                        }
                       }
                     ]
                   }
@@ -169,6 +240,17 @@ export default {
         this.modal.content=selection.onModal
       }
       this.link = selection.name
+    },
+    modalFooter(actions){
+      for(var i=0;i<actions.length;i++){
+        if(actions[i].name == "clear"){
+          this.modal.content.radios.name=""
+          let options = this.modal.content.radios.options
+          for(var n=0;n<options.length;n++){
+            options[n].model = {}
+          }
+        }
+      }
     }
   }
 }
