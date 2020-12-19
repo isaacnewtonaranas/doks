@@ -50,13 +50,13 @@
           <q-btn dense flat icon="close" v-close-popup>
             <q-tooltip>Close</q-tooltip>
           </q-btn>
-        </q-bar> 
+        </q-bar>
         <q-card-section>
           <p class="text-body1 text-weight-bold">{{modal.content.header}}</p>
-          <span v-if="modal.content.radios.dateFormType=='boxy'">
-            <div class="row">
-              <q-list v-if="modal.content.radios.inputType=='date'"  class="col-12">
-                <q-item v-ripple v-for="(radio,i) in modal.content.radios.options" :key="i">
+          <div class="row">
+            <q-list class="col-12">
+              <q-item v-ripple v-for="(radio,i) in modal.content.radios.options" :key="i">
+                <template v-if="radio.inputType=='date'">
                   <q-item-section avatar top>
                     <q-radio v-model="modal.content.radios.name" :val="radio.value" />
                   </q-item-section>
@@ -64,85 +64,76 @@
                     <q-item-label>
                       <span class="text-body1">{{radio.label}}</span>
                     </q-item-label>
-                    <q-item-label caption>  
-                      <q-date landscape v-model="radio.model" :range="radio.dateType=='range'" />
+                    <q-item-label caption>
+                      <template v-if="radio.dateType=='range'">
+                        <template v-if="radio.dateFormType=='boxy'">
+                          <q-date landscape v-model="radio.model" range />
+                        </template>
+                        <template v-else>
+                          <div class="row q-gutter-md">
+                            <div class="col-5">
+                              <q-input v-model="radio.model.from" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                                <template v-slot:append>
+                                  <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                      <q-date v-model="radio.model.from">
+                                        <div class="row items-center justify-end">
+                                          <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                      </q-date>
+                                    </q-popup-proxy>
+                                  </q-icon>
+                                </template>
+                              </q-input>
+                            </div>
+                            <div class="col-5">
+                              <q-input v-model="radio.model.to" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                                <template v-slot:append>
+                                  <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                      <q-date v-model="radio.model.to">
+                                        <div class="row items-center justify-end">
+                                          <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                      </q-date>
+                                    </q-popup-proxy>
+                                  </q-icon>
+                                </template>
+                              </q-input>
+                            </div>
+                          </div>
+                        </template>
+                      </template>
+                      <template v-else>
+                        <template v-if="radio.dateFormType=='boxy'">
+                          <q-date landscape v-model="radio.model" />
+                        </template>
+                        <template v-else>
+                          <div class="row">
+                            <div class="col-5">
+                              <q-input v-model="radio.model" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+                                <template v-slot:append>
+                                  <q-icon name="event" class="cursor-pointer">
+                                    <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
+                                      <q-date v-model="radio.model">
+                                        <div class="row items-center justify-end">
+                                          <q-btn v-close-popup label="Close" color="primary" flat />
+                                        </div>
+                                      </q-date>
+                                    </q-popup-proxy>
+                                  </q-icon>
+                                </template>
+                              </q-input>
+                            </div>
+                          </div>
+                        </template>
+                      </template>
                     </q-item-label>
                   </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-          </span>
-          <span v-else>
-            <div class="row">
-              <q-list v-if="modal.content.radios.inputType=='date'"  class="col-12">
-                <q-item v-ripple v-for="(radio,i) in modal.content.radios.options" :key="i">
-                  <q-item-section avatar top>
-                    <q-radio v-model="modal.content.radios.name" :val="radio.value" />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label>
-                      <span class="text-body1">{{radio.label}}</span>
-                    </q-item-label>
-                    <q-item-label>  
-                      <span v-if="radio.dateType=='range'">
-                        <div class="row q-gutter-md">
-                          <div class="col-5">
-                            <q-input v-model="radio.model.from" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
-                              <template v-slot:append>
-                                <q-icon name="event" class="cursor-pointer">
-                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="radio.model.from">
-                                      <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                      </div>
-                                    </q-date>
-                                  </q-popup-proxy>
-                                </q-icon>
-                              </template>
-                            </q-input>
-                          </div>
-                          <div class="col-5">
-                            <q-input v-model="radio.model.to" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
-                              <template v-slot:append>
-                                <q-icon name="event" class="cursor-pointer">
-                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="radio.model.to">
-                                      <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                      </div>
-                                    </q-date>
-                                  </q-popup-proxy>
-                                </q-icon>
-                              </template>
-                            </q-input>
-                          </div>
-                        </div>
-                      </span>
-                      <span v-else>
-                        <div class="row">
-                          <div class="col-5">
-                            <q-input v-model="radio.model" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
-                              <template v-slot:append>
-                                <q-icon name="event" class="cursor-pointer">
-                                  <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
-                                    <q-date v-model="radio.model">
-                                      <div class="row items-center justify-end">
-                                        <q-btn v-close-popup label="Close" color="primary" flat />
-                                      </div>
-                                    </q-date>
-                                  </q-popup-proxy>
-                                </q-icon>
-                              </template>
-                            </q-input>
-                          </div>
-                        </div>
-                      </span>
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </div>
-          </span>
+                </template>
+              </q-item>
+            </q-list>
+          </div>
         </q-card-section>
         <q-card-actions v-if="modal.content.footer" align="right" class="bg-white">
           <span :key="i" v-for="(footer,i) in modal.content.footer">
@@ -190,6 +181,8 @@ export default {
                   radios:{
                     name:"",
                     inputType:"",
+                    dateFormType:"",
+                    col:1,
                     options:[
                       {
                         dateType:"",

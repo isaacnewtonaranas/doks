@@ -145,19 +145,21 @@ export default {
                   type:"radio",
                   header:"Please select from options below:",
                   radios:{
-                    name:"publish-type",
-                    inputType:"date",
-                    dateFormType:"boxy",
+                    name:"publish-on-type",
                     options:[
                       {
+                        inputType:"date",
+                        dateFormType:"boxy",
                         label:"Publish on",
-                        value:"publish-on",
+                        value:"publish-on-date",
                         model:{}
                       },
                       {
+                        inputType:"date",
+                        dateFormType:"boxy",
                         dateType:"range",
                         label:"Publish between",
-                        value:"publish-between",
+                        value:"publish-between-dates",
                         model:{
                           from:"",
                           to:""
@@ -236,13 +238,106 @@ export default {
                 name:"users",
                 statusText:"Users",
                 label:"Users",
-                icon:"person_add"
+                icon:"person_add",
+                onModal:{
+                  type:"radio",
+                  header:"Please select from options below:",
+                  radios:{
+                    name:"publish-type",
+                    inputType:"select",
+                    options:[
+                      {
+                        label:"Publish on",
+                        value:"publish-on",
+                        model:{}
+                      },
+                      {
+                        dateType:"range",
+                        label:"Publish between",
+                        value:"publish-between",
+                        model:{
+                          from:"",
+                          to:""
+                        }
+                      }
+                    ]
+                  },
+                  footer:[
+                    {
+                      type:"button",
+                      label:"clear",
+                      color:"grey-4",
+                      actions:[
+                        {
+                          name:"clear"
+                        }
+                      ]
+                    },
+                    {
+                      type:"button",
+                      label:"save",
+                      color:"primary",
+                      actions:[
+                        {
+                          name:"save"
+                        }
+                      ]
+                    }
+                  ]
+                }
               },
               {
                 name:"groups",
                 statusText:"Groups",
                 label:"Groups",
-                icon:"groups"
+                icon:"groups",
+                onModal:{
+                  type:"radio",
+                  header:"Please select from options below:",
+                  radios:{
+                    name:"publish-type",
+                    inputType:"date",
+                    col:2,
+                    options:[
+                      {
+                        label:"Publish on",
+                        value:"publish-on",
+                        model:{}
+                      },
+                      {
+                        dateType:"range",
+                        label:"Publish between",
+                        value:"publish-between",
+                        model:{
+                          from:"",
+                          to:""
+                        }
+                      }
+                    ]
+                  },
+                  footer:[
+                    {
+                      type:"button",
+                      label:"clear",
+                      color:"grey-4",
+                      actions:[
+                        {
+                          name:"clear"
+                        }
+                      ]
+                    },
+                    {
+                      type:"button",
+                      label:"save",
+                      color:"primary",
+                      actions:[
+                        {
+                          name:"save"
+                        }
+                      ]
+                    }
+                  ]
+                }
               },
             ]
           }
