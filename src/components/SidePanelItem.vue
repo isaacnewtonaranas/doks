@@ -240,12 +240,12 @@ export default {
               ],
               footer:[
                 {
-                  type:"",
+                  type:"",//button
                   label:"",
                   color:"",
                   actions:[
                     {
-                      name:""
+                      name:""//clear,save
                     }
                   ]
                 }
@@ -277,21 +277,34 @@ export default {
         return this.item.classes[classes]
       }
     },
-    dropDownSelected(selection){
+    createModal(selection){
       if(selection.onModal){
         this.modal.show=true
         this.modal.content=this.useClass(selection.onModal)
       }
+    },
+    dropDownSelected(selection){
+      this.createModal(selection)
       this.link = selection.name
     },
     modalFooter(actions){
+      this.modal.content.radios.name=""
       for(var i=0;i<actions.length;i++){
-        if(actions[i].name == "clear"){
-          this.modal.content.radios.name=""
-          let options = this.modal.content.radios.options
-          for(var n=0;n<options.length;n++){
-            options[n].model = {}
+        if(actions[i].name=="clear"){
+          if(this.modal.content.type=="radio"){
+            let options = this.modal.content.radios.options
+            for(var n=0;n<options.length;n++){
+              if(options[n].inputType=="date"){
+                options[n].date.model = {}
+              }
+              if(options[n].inputType=="select"){
+                options[n].select.model = null
+              }
+            }
           }
+        }
+        if(actions[i].name=="save"){
+          this.modal.show=false
         }
       }
     },
