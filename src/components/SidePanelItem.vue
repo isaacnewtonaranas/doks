@@ -44,27 +44,6 @@
       <q-btn :label="item.button.label" :color="item.button.color" class="full-width" />
     </span>
     <q-dialog v-if="modal.show" v-model="modal.show" persistent>
-      <!-- <q-card>
-        <q-bar>
-          <q-space />
-          <q-btn dense flat icon="close" v-close-popup>
-            <q-tooltip>Close</q-tooltip>
-          </q-btn>
-        </q-bar>
-        <q-item>
-          <q-item-section>
-            <p class="text-body1 text-weight-bold">{{modal.content.header}}</p>
-          </q-item-section>
-        </q-item>
-        <q-card-section horizontal>
-          <q-card-section>
-            {{ lorem }}
-          </q-card-section>
-          <q-card-section class="col-6">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          </q-card-section>
-        </q-card-section>
-      </q-card> -->
       <q-card style="max-width:unset">
         <q-bar>
           <q-space />
@@ -84,7 +63,7 @@
                     </q-item-section>
                     <q-item-section>
                       <q-item-label>
-                        <span class="text-body1">{{radio.label}}</span>
+                        <span class="text-body1">{{radio.date.label}}</span>
                       </q-item-label>
                       <q-item-label caption>
                         <template v-if="radio.date.type=='range'">
@@ -198,7 +177,8 @@ export default {
   props: {
     item: {
       default: {
-        type:"",
+        type:"", //dropdown,textarea,button
+        classes:[],
         textarea:{
           title:"",
           text:"",
@@ -225,14 +205,14 @@ export default {
               separator:false,
               onModal:[
                 {
-                  type:"",
+                  type:"", //radio
                   header:"",
                   radios:{
                     name:"",
                     horizontal:false,
                     options:[
                       {
-                        inputType:"", //date
+                        inputType:"", //date,select
                         label:"",
                         value:"",
                         select:{
@@ -246,8 +226,8 @@ export default {
                           ]
                         },
                         date:{
-                          formType:"",
-                          type:"",
+                          formType:"", //null,boxy
+                          type:"", //null,range
                           model:{
                             from:"",
                             to:""
@@ -278,15 +258,10 @@ export default {
   },
   data () {
     return {
-      model: null,
-      lorem:"dfsdf aga dfgadfg ad gadfg adf gadf agdf gadf g",
       modal: {
         show:false
       },
-      tab: 'edit-article',
-      right: false,
       link: 'inbox',
-      text:"",
       saveSelects:{},
       focusOptions:{
         options:[],
@@ -295,10 +270,17 @@ export default {
     }
   },
   methods:{
+    useClass(classes,string){
+      if(!string){
+        return typeof classes === 'string'?this.item.classes[classes]:classes
+      }else{
+        return this.item.classes[classes]
+      }
+    },
     dropDownSelected(selection){
       if(selection.onModal){
         this.modal.show=true
-        this.modal.content=selection.onModal
+        this.modal.content=this.useClass(selection.onModal)
       }
       this.link = selection.name
     },
@@ -315,9 +297,19 @@ export default {
     },
     setFocusOptions(input){
       if(!this.saveSelects[input.value]){
+        input.select.options.sort(function(a, b) {
+              var nameA = a.name.toUpperCase();
+              var nameB = b.name.toUpperCase();
+              if (nameA < nameB) {
+                return -1;
+              }
+              if (nameA > nameB) {
+                return 1;
+              }
+              return 0;
+        })
         this.saveSelects[input.value] = input
       }
-      console.log(input.value)
       this.focusOptions.key = input.value
     },
     filterFn (val, update) {
@@ -330,6 +322,9 @@ export default {
           this.focusOptions.options = this.saveSelects[this.focusOptions.key].select.options.filter(
             v => v.name.toLowerCase().indexOf(needle) > -1
           )
+          this.focusOptions.options.sort(function(a, b){
+            return a.name.length - b.name.length;
+          })
         }
       })
     }

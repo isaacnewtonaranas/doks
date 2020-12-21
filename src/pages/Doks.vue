@@ -149,19 +149,19 @@ export default {
                     options:[
                       {
                         inputType:"date",
+                        value:"publish-on-date",
                         date:{
                           formType:"boxy",
                           label:"Publish on",
                           model:{}
                         },
-                        value:"publish-on-date",
                       },
                       {
                         inputType:"date",
                         date:{
                           formType:"boxy",
-                          type:"range",
                           label:"Publish between",
+                          type:"range",
                           model:{
                             from:"",
                             to:""
@@ -219,6 +219,118 @@ export default {
         },
         {
           type:"dropdown",
+          classes:{
+            visibilityUsersGroups:{
+              type:"radio",
+              header:"Please select from options below:",
+              radios:{
+                name:"users-groups",
+                horizontal:true,
+                options:[
+                  {
+                    inputType:"select",
+                    label:"Users",
+                    value:"users",
+                    select:{
+                      label:"Search User",
+                      model:null,
+                      options:[
+                        {
+                          name:"Isaac",
+                          id:"2"
+                        },
+                        {
+                          name:"Emmalyn",
+                          id:"1"
+                        },
+                        {
+                          name:"Michell",
+                          id:"3"
+                        },
+                        {
+                          name:"Elsofia",
+                          id:"4"
+                        },
+                        {
+                          name:"Hazel",
+                          id:"5"
+                        },
+                        {
+                          name:"Melody",
+                          id:"6"
+                        },
+                        {
+                          name:"Carl",
+                          id:"7"
+                        }
+                      ]
+                    },
+                  },
+                  {
+                    inputType:"select",
+                    label:"Groups",
+                    value:"groups",
+                    select:{
+                      label:"Search User",
+                      model:null,
+                      options:[
+                        {
+                          name:"Marketing",
+                          id:"1"
+                        },
+                        {
+                          name:"Finance",
+                          id:"2"
+                        },
+                        {
+                          name:"Legal",
+                          id:"3"
+                        },
+                        {
+                          name:"Recruitment",
+                          id:"4"
+                        },
+                        {
+                          name:"IT",
+                          id:"5"
+                        },
+                        {
+                          name:"Payroll",
+                          id:"6"
+                        },
+                        {
+                          name:"Maintenace",
+                          id:"7"
+                        }
+                      ]
+                    },
+                  }
+                ]
+              },
+              footer:[
+                {
+                  type:"button",
+                  label:"clear",
+                  color:"grey-4",
+                  actions:[
+                    {
+                      name:"clear"
+                    }
+                  ]
+                },
+                {
+                  type:"button",
+                  label:"save",
+                  color:"primary",
+                  actions:[
+                    {
+                      name:"save"
+                    }
+                  ]
+                }
+              ]
+            }
+          },
           dropdown:{
             selected:3,
             defaultBtn:1,
@@ -243,122 +355,14 @@ export default {
                 statusText:"Users",
                 label:"Users",
                 icon:"person_add",
-                onModal:{
-                  type:"radio",
-                  header:"Please select from options below:",
-                  radios:{
-                    name:"users-groups",
-                    horizontal:true,
-                    options:[
-                      {
-                        inputType:"select",
-                        label:"Users",
-                        value:"users",
-                        select:{
-                          label:"Search User",
-                          model:null,
-                          options:[
-                            {
-                              name:"Isaac",
-                              id:"2"
-                            },
-                            {
-                              name:"Emmalyn",
-                              id:"1"
-                            },
-                            {
-                              name:"Michell",
-                              id:"3"
-                            },
-                            {
-                              name:"Elsofia",
-                              id:"4"
-                            },
-                            {
-                              name:"Hazel",
-                              id:"5"
-                            },
-                            {
-                              name:"Melody",
-                              id:"6"
-                            },
-                            {
-                              name:"Carl",
-                              id:"7"
-                            }
-                          ]
-                        },
-                      },
-                      {
-                        inputType:"select",
-                        label:"Groups",
-                        value:"groups",
-                        select:{
-                          label:"Search User",
-                          model:null,
-                          options:[
-                            {
-                              name:"Marketing",
-                              id:"1"
-                            },
-                            {
-                              name:"Finance",
-                              id:"2"
-                            },
-                            {
-                              name:"Legal",
-                              id:"3"
-                            },
-                            {
-                              name:"Recruitment",
-                              id:"4"
-                            },
-                            {
-                              name:"IT",
-                              id:"5"
-                            },
-                            {
-                              name:"Payroll",
-                              id:"6"
-                            },
-                            {
-                              name:"Maintenace",
-                              id:"7"
-                            }
-                          ]
-                        },
-                      }
-                    ]
-                  },
-                  footer:[
-                    {
-                      type:"button",
-                      label:"clear",
-                      color:"grey-4",
-                      actions:[
-                        {
-                          name:"clear"
-                        }
-                      ]
-                    },
-                    {
-                      type:"button",
-                      label:"save",
-                      color:"primary",
-                      actions:[
-                        {
-                          name:"save"
-                        }
-                      ]
-                    }
-                  ]
-                }
+                onModal:"visibilityUsersGroups"
               },
               {
                 name:"groups",
                 statusText:"Groups",
                 label:"Groups",
-                icon:"groups"
+                icon:"groups",
+                onModal:"visibilityUsersGroups"
               },
             ]
           }
@@ -382,9 +386,6 @@ export default {
         }
       ]
     }
-  },
-  methods:{
-
   }
 }
 </script>
