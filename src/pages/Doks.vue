@@ -149,21 +149,25 @@ export default {
                     options:[
                       {
                         inputType:"date",
-                        dateFormType:"boxy",
-                        label:"Publish on",
+                        date:{
+                          formType:"boxy",
+                          label:"Publish on",
+                          model:{}
+                        },
                         value:"publish-on-date",
-                        model:{}
                       },
                       {
                         inputType:"date",
-                        dateFormType:"boxy",
-                        dateType:"range",
-                        label:"Publish between",
+                        date:{
+                          formType:"boxy",
+                          type:"range",
+                          label:"Publish between",
+                          model:{
+                            from:"",
+                            to:""
+                          }
+                        },
                         value:"publish-between-dates",
-                        model:{
-                          from:"",
-                          to:""
-                        }
                       }
                     ]
                   },
@@ -244,15 +248,52 @@ export default {
                   header:"Please select from options below:",
                   radios:{
                     name:"users-groups",
+                    horizontal:true,
                     options:[
                       {
                         inputType:"select",
+                        select:{
+                          label:"Search User",
+                          options:[
+                            {
+                              name:"Isaac",
+                              id:"2"
+                            },
+                            {
+                              name:"Emmalyn",
+                              id:"1"
+                            },
+                            {
+                              name:"Michell",
+                              id:"3"
+                            },
+                            {
+                              name:"Elsofia",
+                              id:"4"
+                            },
+                            {
+                              name:"Hazel",
+                              id:"5"
+                            },
+                            {
+                              name:"Melody",
+                              id:"6"
+                            },
+                            {
+                              name:"Carl",
+                              id:"7"
+                            }
+                          ]
+                        },
                         label:"Users",
                         value:"users",
                         model:{}
                       },
                       {
                         inputType:"select",
+                        select:{
+                          label:"Search Group"
+                        },
                         label:"Groups",
                         value:"groups",
                         model:{}
