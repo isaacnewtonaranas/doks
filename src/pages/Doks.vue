@@ -252,8 +252,11 @@ export default {
                     options:[
                       {
                         inputType:"select",
+                        label:"Users",
+                        value:"users",
                         select:{
                           label:"Search User",
+                          model:null,
                           options:[
                             {
                               name:"Isaac",
@@ -285,18 +288,45 @@ export default {
                             }
                           ]
                         },
-                        label:"Users",
-                        value:"users",
-                        model:{}
                       },
                       {
                         inputType:"select",
-                        select:{
-                          label:"Search Group"
-                        },
                         label:"Groups",
                         value:"groups",
-                        model:{}
+                        select:{
+                          label:"Search User",
+                          model:null,
+                          options:[
+                            {
+                              name:"Marketing",
+                              id:"1"
+                            },
+                            {
+                              name:"Finance",
+                              id:"2"
+                            },
+                            {
+                              name:"Legal",
+                              id:"3"
+                            },
+                            {
+                              name:"Recruitment",
+                              id:"4"
+                            },
+                            {
+                              name:"IT",
+                              id:"5"
+                            },
+                            {
+                              name:"Payroll",
+                              id:"6"
+                            },
+                            {
+                              name:"Maintenace",
+                              id:"7"
+                            }
+                          ]
+                        },
                       }
                     ]
                   },

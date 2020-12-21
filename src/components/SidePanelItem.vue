@@ -163,17 +163,16 @@
                         <q-select
                           square
                           outlined
-                          v-model="model"
+                          v-model="radio.select.model"
                           use-input
                           use-chips
                           multiple
                           :label="radio.select.label"
                           input-debounce="0"
-                          atnew-value="createValue"
-                          :options="focusOptions || radio.select.options"
+                          :options="focusOptions.options"
                           option-label="name"
                           option-value="id"
-                          @input-value="setFocusOptions(radio.select.options)"
+                          @focus="setFocusOptions(radio)"
                           @filter="filterFn"
                           style="width: 250px"
                         />
@@ -195,10 +194,6 @@
   </div>
 </template>
 <script>
-const stringOptions = [
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-]
-
 export default {
   props: {
     item: {
@@ -240,6 +235,16 @@ export default {
                         inputType:"", //date
                         label:"",
                         value:"",
+                        select:{
+                          label:"",
+                          model:null,
+                          options:[
+                            {
+                              name:"",
+                              id:""
+                            }
+                          ]
+                        },
                         date:{
                           formType:"",
                           type:"",
@@ -274,8 +279,6 @@ export default {
   data () {
     return {
       model: null,
-
-      filterOptions: stringOptions,
       lorem:"dfsdf aga dfgadfg ad gadfg adf gadf agdf gadf g",
       modal: {
         show:false
@@ -284,7 +287,11 @@ export default {
       right: false,
       link: 'inbox',
       text:"",
-      focusOptions:null
+      saveSelects:{},
+      focusOptions:{
+        options:[],
+        key:''
+      }
     }
   },
   methods:{
@@ -306,39 +313,21 @@ export default {
         }
       }
     },
-    setFocusOptions(options){
-      console.log(options)
-      this.focusOptions = options
+    setFocusOptions(input){
+      if(!this.saveSelects[input.value]){
+        this.saveSelects[input.value] = input
+      }
+      console.log(input.value)
+      this.focusOptions.key = input.value
     },
-    // createValue (val, done) {
-      // Calling done(var) when new-value-mode is not set or "add", or done(var, "add") adds "var" content to the model
-      // and it resets the input textbox to empty string
-      // ----
-      // Calling done(var) when new-value-mode is "add-unique", or done(var, "add-unique") adds "var" content to the model
-      // only if is not already set
-      // and it resets the input textbox to empty string
-      // ----
-      // Calling done(var) when new-value-mode is "toggle", or done(var, "toggle") toggles the model with "var" content
-      // (adds to model if not already in the model, removes from model if already has it)
-      // and it resets the input textbox to empty string
-      // ----
-      // If "var" content is undefined/null, then it doesn't tampers with the model
-      // and only resets the input textbox to empty string
-
-    //   if (val.length > 2) {
-    //     if (!stringOptions.includes(val)) {
-    //       done(val, 'add-unique')
-    //     }
-    //   }
-    // },
     filterFn (val, update) {
       update(() => {
         if (val === '') {
-          this.focusOptions = this.focusOptions
+          this.focusOptions.options = this.saveSelects[this.focusOptions.key].select.options
         }
         else {
           const needle = val.toLowerCase()
-          this.focusOptions = this.focusOptions.filter(
+          this.focusOptions.options = this.saveSelects[this.focusOptions.key].select.options.filter(
             v => v.name.toLowerCase().indexOf(needle) > -1
           )
         }
