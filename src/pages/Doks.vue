@@ -236,32 +236,24 @@ export default {
                       model:null,
                       options:[
                         {
-                          name:"Isaac",
-                          id:"2"
-                        },
-                        {
-                          name:"Emmalyn",
+                          name:"Alby",
                           id:"1"
                         },
                         {
-                          name:"Michell",
+                          name:"Barka",
+                          id:"2"
+                        },
+                        {
+                          name:"Catali",
                           id:"3"
                         },
                         {
-                          name:"Elsofia",
+                          name:"Dorano",
                           id:"4"
                         },
                         {
-                          name:"Hazel",
+                          name:"Elayi",
                           id:"5"
-                        },
-                        {
-                          name:"Melody",
-                          id:"6"
-                        },
-                        {
-                          name:"Carl",
-                          id:"7"
                         }
                       ]
                     },

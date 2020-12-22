@@ -179,8 +179,7 @@
                         <q-icon :name="folderIcon[prop.expanded?1:0]" color="orange" size="28px" class="q-mr-sm" />
                         <div class="folder-open-added-icon" v-if="prop.expanded"></div>
                       </template>
-                      <!-- <q-btn label="log" @click="consolelog(prop)"/> -->
-                      <div class="text-weight-bold">{{ prop.node.label }}</div>
+                      <div class="text-subtitle1">{{ prop.node.label }}</div>
                     </div>
                   </template>
                 </q-tree>
@@ -354,7 +353,6 @@ export default {
             }
           }
           if(this.modal.content.type=="tree"){
-            console.log('test')
             let trees = this.modal.content.tree
             for(var n=0;n<trees.length;n++){
               trees[n].ticked = []
