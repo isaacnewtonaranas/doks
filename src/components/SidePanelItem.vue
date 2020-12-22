@@ -41,7 +41,7 @@
     <span v-if="item.type=='button'">
       <div class="text-subtitle1">{{item.button.title}}</div>
       <div class="text-caption text-grey">{{item.button.caption}}</div>
-      <q-btn :label="item.button.label" :color="item.button.color" class="full-width" />
+      <q-btn @click="buttonClicked(item)" :label="item.button.label" :color="item.button.color" class="full-width" />
     </span>
     <q-dialog v-if="modal.show" v-model="modal.show" persistent>
       <q-card style="max-width:unset">
@@ -53,8 +53,8 @@
         </q-bar>
         <q-card-section>
           <p class="text-body1 text-weight-bold">{{modal.content.header}}</p>
-          <q-card-section class="q-pa-none" :horizontal="modal.content.radios.horizontal">
-            <template v-if="modal.content.type=='radio'">
+          <template v-if="modal.content.type=='radio'">
+            <q-card-section class="q-pa-none" :horizontal="modal.content.radios.horizontal">
               <q-card-section class="q-pa-none" v-for="(radio,i) in modal.content.radios.options" :key="i"> 
                 <q-item v-ripple>
                   <template v-if="radio.inputType=='date'">
@@ -160,8 +160,33 @@
                   </template>
                 </q-item>
               </q-card-section>
-            </template>
-          </q-card-section> 
+            </q-card-section> 
+          </template>
+          <template v-if="modal.content.type=='tree'">
+            <div class="q-pa-md row q-col-gutter-sm tree" style="">
+              <span v-for="(tree,i) in modal.content.tree" :key="i">
+                <q-tree
+                  icon="folder"
+                  :ticked.sync="tree.ticked"
+                  no-connectors
+                  :nodes="tree.labels"
+                  node-key="label"
+                  tick-strategy="leaf"
+                >
+                  <template v-slot:default-header="prop">
+                    <div class="row items-center">
+                      <template v-if="prop.node.children">
+                        <q-icon :name="folderIcon[prop.expanded?1:0]" color="orange" size="28px" class="q-mr-sm" />
+                        <div class="folder-open-added-icon" v-if="prop.expanded"></div>
+                      </template>
+                      <!-- <q-btn label="log" @click="consolelog(prop)"/> -->
+                      <div class="text-weight-bold">{{ prop.node.label }}</div>
+                    </div>
+                  </template>
+                </q-tree>
+              </span>
+            </div>
+          </template>
         </q-card-section>
         <q-card-actions v-if="modal.content.footer" align="right" class="bg-white">
           <span :key="i" v-for="(footer,i) in modal.content.footer">
@@ -188,7 +213,26 @@ export default {
           title:"",
           caption:"",
           label:"Select Category",
-          color:"primary"
+          color:"primary",
+          onModal:{
+            type:"", //tree
+            header:"",
+            tree:[
+              {
+                labels:{
+                  label: '',
+                  disabled: false,
+                  icon:'',
+                  children: [
+                    {
+                      label: '',
+                      disabled: false
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         },
         dropdown:{
           selected:0,
@@ -258,6 +302,7 @@ export default {
   },
   data () {
     return {
+      folderIcon:['folder','folder_open'],
       modal: {
         show:false
       },
@@ -270,6 +315,12 @@ export default {
     }
   },
   methods:{
+    consolelog(log){
+      console.log(log)
+    },
+    buttonClicked(button){
+      this.createModal(button.button)
+    },
     useClass(classes,string){
       if(!string){
         return typeof classes === 'string'?this.item.classes[classes]:classes
@@ -277,10 +328,10 @@ export default {
         return this.item.classes[classes]
       }
     },
-    createModal(selection){
-      if(selection.onModal){
+    createModal(item){
+      if(item.onModal){
         this.modal.show=true
-        this.modal.content=this.useClass(selection.onModal)
+        this.modal.content=this.useClass(item.onModal)
       }
     },
     dropDownSelected(selection){
@@ -288,23 +339,30 @@ export default {
       this.link = selection.name
     },
     modalFooter(actions){
-      this.modal.content.radios.name=""
       for(var i=0;i<actions.length;i++){
         if(actions[i].name=="clear"){
           if(this.modal.content.type=="radio"){
+            this.modal.content.radios.name=""
             let options = this.modal.content.radios.options
             for(var n=0;n<options.length;n++){
               if(options[n].inputType=="date"){
                 options[n].date.model = {}
               }
-              if(options[n].inputType=="select"){
+              if(options[n].inputType == "select"){
                 options[n].select.model = null
               }
             }
           }
+          if(this.modal.content.type=="tree"){
+            console.log('test')
+            let trees = this.modal.content.tree
+            for(var n=0;n<trees.length;n++){
+              trees[n].ticked = []
+            }
+          }
         }
-        if(actions[i].name=="save"){
-          this.modal.show=false
+        if(actions[i].name == "save"){
+          this.modal.show = false
         }
       }
     },

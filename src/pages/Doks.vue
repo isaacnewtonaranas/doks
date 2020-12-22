@@ -381,7 +381,89 @@ export default {
             title:"Category",
             caption:"Marketing, Finance, Legal",
             label:"Select Category",
-            color:"primary"
+            color:"primary",
+            onModal:{
+              type:"tree",
+              header:"Please select from categories below:",
+              tree:[
+                {
+                  showFolder:0,
+                  ticked:[],
+                  labels:[
+                    {
+                      showFolder:0,
+                      label: 'Sales',
+                      children: [
+                        {
+                          label: 'Services'
+                        },
+                      ]
+                    },
+                    {
+                      showFolder:0,
+                      label: 'Finance',
+                      children: [
+                        {
+                          label: 'Staff'
+                        }
+                      ]
+                    },
+                    {
+                      showFolder:0,
+                      label: 'Marketing',
+                      children: [
+                        {
+                          label: 'Digital'
+                        },
+                        {
+                          label: 'Offline'
+                        }
+                      ]
+                    },
+                    {
+                      showFolder:0,
+                      label: 'HR & Legal',
+                      children: [
+                        {
+                          label: 'Recruitment'
+                        }
+                      ]
+                    },
+                    {
+                      showFolder:0,
+                      label: 'Customer Service',
+                      children: [
+                        {
+                          label: 'Clerk'
+                        }
+                      ]
+                    }
+                  ]
+                },
+              ],
+              footer:[
+                {
+                  type:"button",
+                  label:"clear",
+                  color:"grey-4",
+                  actions:[
+                    {
+                      name:"clear"
+                    }
+                  ]
+                },
+                {
+                  type:"button",
+                  label:"save",
+                  color:"primary",
+                  actions:[
+                    {
+                      name:"save"
+                    }
+                  ]
+                }
+              ]
+            },
           }
         }
       ]
