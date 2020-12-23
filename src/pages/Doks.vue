@@ -46,7 +46,52 @@
         <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
           <q-tab-panel name="edit-article">
             <div class="tab-panel-container">
-
+              <div class="row">
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-12">
+                      <div class="gray-box bg-grey-2">
+                        <span class="text-subtitle1">
+                          Select similar articles:
+                        </span>
+                        <div class="tree-on-gray">
+                          <TreeFolder :tree="trees" />
+                        </div>
+                      </div>
+                      <div class="gray-box bg-grey-2">
+                        <span class="text-subtitle1">
+                          Select similar articles:
+                        </span>
+                        <div class="tree-on-gray">
+                          <q-option-group
+                            :options="options"
+                            label="Notifications"
+                            type="checkbox"
+                            v-model="group"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-12">
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5">
+                  <div class="no-box">
+                    <span class="text-subtitle1">
+                      Select similar articles:
+                    </span>
+                    <div>
+                      <q-option-group
+                        :options="options"
+                        label="Notifications"
+                        type="checkbox"
+                        v-model="group"
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </q-tab-panel>
 
@@ -113,6 +158,7 @@
 <script>
 export default {
   components: {
+    TreeFolder: () => import('../components/TreeFolder.vue'),
     SidePanelItem: () => import('../components/SidePanelItem.vue')
   },
   data () {
@@ -120,6 +166,71 @@ export default {
       showRightDrawerButton:false,
       tab: 'edit-article',
       right: false,
+      group: [],
+      options: [
+        { label: 'Hot Water Faults', value: 'bat' },
+        { label: 'Wrongful Disconnection Checklist', value: 'friend'},
+        { label: 'VIC Life Support Form', value: 'upload'}
+      ],
+      trees:
+        {
+          ticked:[],
+          labels:[
+            {
+              showFolder:0,
+              label: 'Sales',
+              children: [
+                {
+                  label: 'Services',
+                  children: [
+                    {
+                      label: 'Hot Water Faults'
+                    },
+                  ]
+                },
+              ]
+            },
+            {
+              showFolder:0,
+              label: 'Finance',
+              children: [
+                {
+                  label: 'Staff'
+                }
+              ]
+            },
+            {
+              showFolder:0,
+              label: 'Marketing',
+              children: [
+                {
+                  label: 'Wrongful Disconnection Checklist'
+                },
+                {
+                  label: 'VIC Life Support Form'
+                }
+              ]
+            },
+            {
+              showFolder:0,
+              label: 'HR & Legal',
+              children: [
+                {
+                  label: 'Recruitment'
+                }
+              ]
+            },
+            {
+              showFolder:0,
+              label: 'Customer Service',
+              children: [
+                {
+                  label: 'Clerk'
+                }
+              ]
+            }
+          ]
+        },
       sidePanelItems:[
         {
           type:"dropdown",
@@ -379,7 +490,6 @@ export default {
               header:"Please select from categories below:",
               tree:[
                 {
-                  showFolder:0,
                   ticked:[],
                   labels:[
                     {

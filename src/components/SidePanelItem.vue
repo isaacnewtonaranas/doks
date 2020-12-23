@@ -163,26 +163,9 @@
             </q-card-section> 
           </template>
           <template v-if="modal.content.type=='tree'">
-            <div class="q-pa-md row q-col-gutter-sm tree" style="">
+            <div class="q-pa-md row q-col-gutter-sm tree">
               <span v-for="(tree,i) in modal.content.tree" :key="i">
-                <q-tree
-                  icon="folder"
-                  :ticked.sync="tree.ticked"
-                  no-connectors
-                  :nodes="tree.labels"
-                  node-key="label"
-                  tick-strategy="leaf"
-                >
-                  <template v-slot:default-header="prop">
-                    <div class="row items-center">
-                      <template v-if="prop.node.children">
-                        <q-icon :name="folderIcon[prop.expanded?1:0]" color="orange" size="28px" class="q-mr-sm" />
-                        <div class="folder-open-added-icon" v-if="prop.expanded"></div>
-                      </template>
-                      <div class="text-subtitle1">{{ prop.node.label }}</div>
-                    </div>
-                  </template>
-                </q-tree>
+                <TreeFolder :tree="tree" />
               </span>
             </div>
           </template>
@@ -198,6 +181,9 @@
 </template>
 <script>
 export default {
+  components: {
+    TreeFolder: () => import('../components/TreeFolder.vue')
+  },
   props: {
     item: {
       default: {
@@ -218,17 +204,23 @@ export default {
             header:"",
             tree:[
               {
-                labels:{
-                  label: '',
-                  disabled: false,
-                  icon:'',
-                  children: [
-                    {
-                      label: '',
-                      disabled: false
-                    }
-                  ]
-                }
+                ticked:[],
+                labels:[
+                  {
+                    showFolder:0,
+                    label: '',
+                    disabled: false,
+                    icon:'',
+                    children: [
+                      {
+                        showFolder:0,
+                        ticked:0,
+                        label: '',
+                        disabled: false
+                      }
+                    ]
+                  }
+                ]
               }
             ]
           }
