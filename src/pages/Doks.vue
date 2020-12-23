@@ -46,6 +46,12 @@
         <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
           <q-tab-panel name="edit-article">
             <div class="tab-panel-container">
+
+            </div>
+          </q-tab-panel>
+
+          <q-tab-panel name="related-articles">
+            <div class="tab-panel-container">
               <div class="row">
                 <div class="col-md-7">
                   <div class="row">
@@ -64,10 +70,10 @@
                         </span>
                         <div class="tree-on-gray">
                           <q-option-group
-                            :options="options"
+                            :options="similarArticles"
                             label="Notifications"
                             type="checkbox"
-                            v-model="group"
+                            v-model="similarArticlesSelected"
                           />
                         </div>
                       </div>
@@ -77,27 +83,32 @@
                   </div>
                 </div>
                 <div class="col-md-5">
-                  <div class="no-box">
-                    <span class="text-subtitle1">
-                      Select similar articles:
-                    </span>
-                    <div>
-                      <q-option-group
-                        :options="options"
-                        label="Notifications"
-                        type="checkbox"
-                        v-model="group"
-                      />
+                  <div class="row justify-between full-height">
+                    <div class="col-md-12 no-box">
+                      <span class="text-subtitle1">
+                        Select similar articles:
+                      </span>
+                      <div>
+                        <q-option-group
+                          :options="suggestedArticles"
+                          label="Notifications"
+                          type="checkbox"
+                          v-model="suggestedArticlesSelected"
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-12 row footer">
+                      <div class="col self-end">
+                        <div class="column">
+                          <div class="self-end">
+                            <q-btn label="save" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="related-articles">
-            <div class="tab-panel-container">
-
             </div>
           </q-tab-panel>
 
@@ -166,8 +177,14 @@ export default {
       showRightDrawerButton:false,
       tab: 'edit-article',
       right: false,
-      group: [],
-      options: [
+      similarArticlesSelected: [],
+      suggestedArticlesSelected: [],
+      similarArticles: [
+        { label: 'Hot Water Faults', value: 'bat' },
+        { label: 'Wrongful Disconnection Checklist', value: 'friend'},
+        { label: 'VIC Life Support Form', value: 'upload'}
+      ],
+      suggestedArticles: [
         { label: 'Hot Water Faults', value: 'bat' },
         { label: 'Wrongful Disconnection Checklist', value: 'friend'},
         { label: 'VIC Life Support Form', value: 'upload'}
