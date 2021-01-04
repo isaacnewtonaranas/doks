@@ -1,14 +1,22 @@
 <template>
-  <q-layout view="hHh LpR fFf">
+  <q-layout class="main-layout" view="hHh LpR fFf">
 
     <q-header class="bg-primary text-white">
       <q-toolbar>
         <q-btn v-if="showLeftDrawerButton" dense flat round icon="menu" @click="left = !left" />
 
-        <q-toolbar-title>
+        <q-toolbar-title class="row justify-between">
           <q-avatar>
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
+          <div class="avatar-container text-center">
+            <q-avatar>
+              <img class="avatar" src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
+            </q-avatar>
+            <div class="text-subtitle2 text-weight-light">
+              Girish
+            </div>
+          </div>
         </q-toolbar-title>
 
       </q-toolbar>

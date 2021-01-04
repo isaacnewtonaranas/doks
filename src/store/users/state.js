@@ -2,7 +2,7 @@ export default {
   status: ['Disabled', 'Active'],
   data: [
     {
-      id: 1,
+      id: 0,
       name: 'Dorothea Setch',
       email: 'dsetch0@drupal.org',
       status: 1,
@@ -10,7 +10,7 @@ export default {
       created_on: '27/09/2020',
     },
     {
-      id: 2,
+      id: 1,
       name: 'Abbe Gouth',
       email: 'ogouth1@home.pl',
       status: 0,
@@ -18,7 +18,7 @@ export default {
       created_on: '02/10/2020',
     },
     {
-      id: 3,
+      id: 2,
       name: 'Zelma Cearley',
       email: 'zcearly@unblog.fr',
       status: 1,
@@ -26,7 +26,7 @@ export default {
       created_on: '22/06/2020',
     },
     {
-      id: 4,
+      id: 3,
       name: 'Lemmie Palley',
       email: 'lpalley3@hc360.com',
       status: 0,
@@ -34,7 +34,7 @@ export default {
       created_on: '14/10/2020',
     },
     {
-      id: 5,
+      id: 4,
       name: 'Demott Bonass',
       email: 'dbonass4@com.com',
       status: 0,
