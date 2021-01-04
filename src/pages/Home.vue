@@ -1,5 +1,5 @@
 <template>
-  <q-page class="doks home">
+  <q-page class="doks home" v-if="!loading">
     <div class="container q-pa-lg">
       <div class="row justify-between">
         <q-breadcrumbs>
@@ -36,177 +36,124 @@
           />
       </div>
     </div>
-    <q-drawer show-if-above v-model="right" side="right">
-      <div class="side-panel row">
-        <div class="side-panel-top col-md-12">
-          <div class="row q-col-gutter-md">
-            <div class="col">
-              <q-btn label="Save" color="primary" />
-            </div>
-            <div class="col-8">
-              <q-btn class="full-width" label="Preview" color="primary" />
-            </div>
-          </div>
-        </div>
-        <SidePanelItem
-          v-for="(sidePanelItem,i) in sidePanelItems"
-          :key="i"
-          :item="sidePanelItem"
-        />
-      </div>
-    </q-drawer>
   </q-page>
 </template>
 <script>
 export default {
-  components: {
-    SidePanelItem: () => import('../components/SidePanelItem.vue')
+  computed:{
+    status:{
+      get(){
+        return this.$store.getters['users/status']
+      }
+    },
+    groups:{
+      get(){
+        return this.$store.getters['users/groups']
+      }
+    },
+    users:{
+      get(){
+        return this.$store.getters['users/users']
+      }
+    }
+  },
+  mounted(){
+    this.loading = false
   },
   methods:{
     countTable(table,label){
       return table.length + " " + label + (table.length > 1 ? "s" : "")
     }
   },
-  data () {
+  data() {
     return {
-      status:["Disabled","Active"],
-      groupsColumns:[
-        {
-          name: 'name',
-          required: true,
-          label: 'Name',
-          align: 'left',
-          field: row => row.name,
-          format: val => `${val}`,
-          sortable: true
-        },
-        {
-          name: 'no_of_users',
-          required: true,
-          label: 'No. of users',
-          align: 'left',
-          field: row => this.users.filter(u=>u.group==row.id).length,
-          sortable: true
-        },
-        {
-          name: 'status',
-          required: true,
-          label: 'Status',
-          align: 'left',
-          field: row => this.status[row.status],
-          sortable: true
-        },
-        {
-          name: 'created_on',
-          required: true,
-          label: 'Created On',
-          align: 'left',
-          field: "created_on",
-          sortable: true
-        },
-        {
-          name: 'action',
-          required: true,
-          label: 'Action',
-          align: 'left',
-          field: "id"
-        },
-      ],
-      groups:[
-        {
-          id:0,
-          name:"IT",
-          status:1,
-          created_on:"27/092020",
-        },
-        {
-          id:1,
-          name:"Services",
-          status:1,
-          created_on:"02/10/2020",
-        },
-        {
-          id:2,
-          name:"Sales",
-          status:0,
-          created_on:"22/06/2020",
-        },
-      ],
       usersColumns: [
         {
           name: 'name',
           required: true,
           label: 'Name',
           align: 'left',
-          field: row => row.name,
-          format: val => `${val}`,
-          sortable: true
+          field: (row) => row.name,
+          sortable: true,
         },
-        { name: 'email', align: 'left', label: 'Email', field: 'email', sortable: true },
+        {
+          name: 'email',
+          align: 'left',
+          label: 'Email',
+          field: 'email',
+          sortable: true,
+        },
         {
           name: 'status',
           label: 'Status',
-          field: row => this.status[row.status],
+          field: (row) => this.status[row.status],
           sortable: true,
           align: 'left',
         },
         {
           name: 'group',
           label: 'Group',
-          field: row => this.groups[row.group].name,
+          field: (row) => this.groups[row.group].name,
           sortable: true,
           align: 'left',
         },
-        { name: 'created-on', label: 'Created On', field: 'created_on', align: 'left', sortable: true},
+        {
+          name: 'created-on',
+          label: 'Created On',
+          field: 'created_on',
+          align: 'left',
+          sortable: true,
+        },
         {
           name: 'action',
           label: 'Action',
           field: 'id',
-          align: 'left'
+          align: 'left',
         },
       ],
-      users: [
+      groupsColumns: [
         {
-          id:1,
-          name: 'Dorothea Setch',
-          email: "dsetch0@drupal.org",
-          status: 1,
-          group: 0,
-          created_on: "27/09/2020",
+          name: 'name',
+          required: true,
+          label: 'Name',
+          align: 'left',
+          field: (row) => row.name,
+          format: (val) => `${val}`,
+          sortable: true,
         },
         {
-          id:2,
-          name: 'Abbe Gouth',
-          email: "ogouth1@home.pl",
-          status: 0,
-          group: 0,
-          created_on: "02/10/2020",
+          name: 'no_of_users',
+          required: true,
+          label: 'No. of users',
+          align: 'left',
+          field: (row) => this.users.filter((u) => u.group == row.id).length,
+          sortable: true,
         },
         {
-          id:3,
-          name: 'Zelma Cearley',
-          email: "zcearly@unblog.fr",
-          status: 1,
-          group: 1,
-          created_on: "22/06/2020",
+          name: 'status',
+          required: true,
+          label: 'Status',
+          align: 'left',
+          field: (row) => this.status[row.status],
+          sortable: true,
         },
         {
-          id:4,
-          name: 'Lemmie Palley',
-          email: "lpalley3@hc360.com",
-          status: 0,
-          group: 2,
-          created_on: "14/10/2020",
+          name: 'created_on',
+          required: true,
+          label: 'Created On',
+          align: 'left',
+          field: 'created_on',
+          sortable: true,
         },
         {
-          id:5,
-          name: 'Demott Bonass',
-          email: "dbonass4@com.com",
-          status: 0,
-          group: 0,
-          created_on: "15/10/2020",
-        }
+          name: 'action',
+          required: true,
+          label: 'Action',
+          align: 'left',
+          field: 'id',
+        },
       ],
+      loading:false,
       showRightDrawerButton:false,
       tab: 'edit-article',
       right: false,
