@@ -6,7 +6,7 @@
         <q-btn v-if="showLeftDrawerButton" dense flat round icon="menu" @click="left = !left" />
 
         <q-toolbar-title class="row justify-between">
-          <q-avatar>
+          <q-avatar class="logo">
             <img src="https://cdn.quasar.dev/logo/svg/quasar-logo.svg">
           </q-avatar>
           <div class="avatar-container text-center">
