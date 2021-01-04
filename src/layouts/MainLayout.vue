@@ -14,8 +14,13 @@
       </q-toolbar>
     </q-header>
 
-    <q-drawer class="left-menu" show-if-above v-model="left" :width="100" side="left" bordered>
-      <q-btn class="mb-auto btn" color="primary" label="Home"/>
+    <q-drawer class="left-menu" show-if-above v-model="left" :width="140" side="left" bordered>
+      <div>
+        <q-btn class="btn q-pt-md q-pb-sm q-mt-md" flat stack color="primary" label="Home" icon="fa fa-home"/>
+        <q-btn class="btn q-pt-md q-pb-sm q-mt-md" flat stack color="primary" label="Users" icon="fa fa-users"/>
+        <q-btn class="btn q-pt-md q-pb-sm q-mt-md" flat stack color="primary" label="Analytics" icon="fa fa-chart-bar"/>
+        <q-btn class="btn q-pt-md q-pb-sm q-mt-md" flat stack color="primary" label="Settings" icon="fa fa-sliders-h"/>
+      </div>
       <q-btn class="btn" color="primary" label="Logout"/>
     </q-drawer>
 

@@ -1,147 +1,39 @@
 <template>
-  <q-page class="doks">
-    <div class="container">
+  <q-page class="doks home">
+    <div class="container q-pa-lg">
       <div class="row justify-between">
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" />
-          <q-breadcrumbs-el label="Sales" />
-          <q-breadcrumbs-el label="Compliance" />
+          <q-breadcrumbs-el label="Users" />
         </q-breadcrumbs>
-        <q-btn icon="keyboard_arrow_left"  color="grey-4" text-color="grey-9" label="Back" />
       </div>
       <div class="row justify-end right-drawer">
         <q-btn v-if="showRightDrawerButton" dense flat round icon="menu" @click="right = !right" />
       </div>
-      <div class="row title-url">
-        <q-input label="Title goes here" dense />
-        <q-input label="/title-goes-here" dense>
-          <template v-slot:before>
-            <p class="text-subtitle1">URL:</p>
-          </template>
-          <template v-slot:after>
-            <p><q-btn round dense flat icon="content_paste" /></p>
-          </template>
-      </q-input>
+      <div class="row header">
+          <div class="text-subtitle1 column justify-center q-pl-sm">{{countTable(users,"user")}}</div>
+          <div><q-btn label="New User" color="primary"/></div>
       </div>
       <div class="row tab-panels">
-        <q-tabs
-          v-model="tab"
-          dense
-          class="text-grey"
-          active-color="grey-7"
-          indicator-color="white"
-          align="justify"
-        >
-          <q-tab name="edit-article" label="Edit Article" />
-          <q-tab name="related-articles" label="Related Articles" />
-          <q-tab name="seo" label="SEO" />
-          <q-tab name="history" label="History" />
-          <q-tab name="stats" label="Stats" />
-          <q-tab name="comments" label="Comments" />
-          <q-tab name="others" label="Others" />
-        </q-tabs>
-
-        <q-separator />
-
-        <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
-          <q-tab-panel name="edit-article">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="related-articles">
-            <div class="tab-panel-container">
-              <div class="row">
-                <div class="col-md-7">
-                  <div class="row">
-                    <div class="col-12">
-                      <div class="gray-box bg-grey-2">
-                        <span class="text-subtitle1">
-                          Select similar articles:
-                        </span>
-                        <div class="tree-on-gray">
-                          <TreeFolder :tree="trees" />
-                        </div>
-                      </div>
-                      <div class="gray-box bg-grey-2">
-                        <span class="text-subtitle1">
-                          Select similar articles:
-                        </span>
-                        <div class="tree-on-gray">
-                          <q-option-group
-                            :options="similarArticles"
-                            label="Notifications"
-                            type="checkbox"
-                            v-model="similarArticlesSelected"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-5">
-                  <div class="row justify-between full-height">
-                    <div class="col-md-12 no-box">
-                      <span class="text-subtitle1">
-                        Select similar articles:
-                      </span>
-                      <div>
-                        <q-option-group
-                          :options="suggestedArticles"
-                          label="Notifications"
-                          type="checkbox"
-                          v-model="suggestedArticlesSelected"
-                        />
-                      </div>
-                    </div>
-                    <div class="col-md-12 row footer">
-                      <div class="col self-end">
-                        <div class="column">
-                          <div class="self-end">
-                            <q-btn label="save" color="primary" />
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="seo">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-
-          <q-tab-panel name="history">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-          
-          <q-tab-panel name="stats">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-          
-          <q-tab-panel name="comments">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-          
-          <q-tab-panel name="others">
-            <div class="tab-panel-container">
-
-            </div>
-          </q-tab-panel>
-        </q-tab-panels>
+          <q-table
+            class="full-width table"
+            :data="users"
+            :columns="usersColumns"
+            row-key="name"
+          />
+      </div>
+      <div class="q-my-xl"></div>
+      <div class="row header">
+          <div class="text-subtitle1 column justify-center q-pl-sm">{{countTable(groups,"group")}}</div>
+          <div><q-btn label="New Group" color="primary"/></div>
+      </div>
+      <div class="row tab-panels">
+          <q-table
+            class="full-width table"
+            :data="groups"
+            :columns="groupsColumns"
+            row-key="name"
+          />
       </div>
     </div>
     <q-drawer show-if-above v-model="right" side="right">
@@ -165,15 +57,156 @@
     </q-drawer>
   </q-page>
 </template>
-
 <script>
 export default {
   components: {
-    TreeFolder: () => import('../components/TreeFolder.vue'),
     SidePanelItem: () => import('../components/SidePanelItem.vue')
+  },
+  methods:{
+    countTable(table,label){
+      return table.length + " " + label + (table.length > 1 ? "s" : "")
+    }
   },
   data () {
     return {
+      status:["Disabled","Active"],
+      groupsColumns:[
+        {
+          name: 'name',
+          required: true,
+          label: 'Name',
+          align: 'left',
+          field: row => row.name,
+          format: val => `${val}`,
+          sortable: true
+        },
+        {
+          name: 'no_of_users',
+          required: true,
+          label: 'No. of users',
+          align: 'left',
+          field: row => this.users.filter(u=>u.group==row.id).length,
+          sortable: true
+        },
+        {
+          name: 'status',
+          required: true,
+          label: 'Status',
+          align: 'left',
+          field: row => this.status[row.status],
+          sortable: true
+        },
+        {
+          name: 'created_on',
+          required: true,
+          label: 'Created On',
+          align: 'left',
+          field: "created_on",
+          sortable: true
+        },
+        {
+          name: 'action',
+          required: true,
+          label: 'Action',
+          align: 'left',
+          field: "id"
+        },
+      ],
+      groups:[
+        {
+          id:0,
+          name:"IT",
+          status:1,
+          created_on:"27/092020",
+        },
+        {
+          id:1,
+          name:"Services",
+          status:1,
+          created_on:"02/10/2020",
+        },
+        {
+          id:2,
+          name:"Sales",
+          status:0,
+          created_on:"22/06/2020",
+        },
+      ],
+      usersColumns: [
+        {
+          name: 'name',
+          required: true,
+          label: 'Name',
+          align: 'left',
+          field: row => row.name,
+          format: val => `${val}`,
+          sortable: true
+        },
+        { name: 'email', align: 'left', label: 'Email', field: 'email', sortable: true },
+        {
+          name: 'status',
+          label: 'Status',
+          field: row => this.status[row.status],
+          sortable: true,
+          align: 'left',
+        },
+        {
+          name: 'group',
+          label: 'Group',
+          field: row => this.groups[row.group].name,
+          sortable: true,
+          align: 'left',
+        },
+        { name: 'created-on', label: 'Created On', field: 'created_on', align: 'left', sortable: true},
+        {
+          name: 'action',
+          label: 'Action',
+          field: 'id',
+          align: 'left'
+        },
+      ],
+      users: [
+        {
+          id:1,
+          name: 'Dorothea Setch',
+          email: "dsetch0@drupal.org",
+          status: 1,
+          group: 0,
+          created_on: "27/09/2020",
+        },
+        {
+          id:2,
+          name: 'Abbe Gouth',
+          email: "ogouth1@home.pl",
+          status: 0,
+          group: 0,
+          created_on: "02/10/2020",
+        },
+        {
+          id:3,
+          name: 'Zelma Cearley',
+          email: "zcearly@unblog.fr",
+          status: 1,
+          group: 1,
+          created_on: "22/06/2020",
+        },
+        {
+          id:4,
+          name: 'Lemmie Palley',
+          email: "lpalley3@hc360.com",
+          status: 0,
+          group: 2,
+          created_on: "14/10/2020",
+        },
+        {
+          id:5,
+          name: 'Demott Bonass',
+          email: "dbonass4@com.com",
+          status: 0,
+          group: 0,
+          created_on: "15/10/2020",
+        }
+      ],
       showRightDrawerButton:false,
       tab: 'edit-article',
       right: false,
