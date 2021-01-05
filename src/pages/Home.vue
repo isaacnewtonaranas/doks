@@ -13,15 +13,16 @@
       </div>
       <div class="row tab-panels">
         <q-table
-          class="full-width table"
+          class="table"
           :data="users"
           :columns="usersColumns"
           row-key="id"
           :pagination="pagination"
+          dense
         >
           <template v-slot:body-cell-action="props">
             <q-td :props="props">
-              <q-icon class="cursor-pointer" @click="edit(props.value,'users')" name="fa fa-edit" color="primary" style="font-size:18px;margin-top:-5px" />
+              <q-icon class="cursor-pointer edit-icon" @click="edit(props.value,'users')" name="fa fa-edit" color="primary" />
             </q-td>
           </template>
         </q-table>
@@ -33,17 +34,38 @@
       </div>
       <div class="row tab-panels">
           <q-table
-            class="full-width table"
+            dense
+            class="table"
             :data="groups"
             :columns="groupsColumns"
             row-key="id"
             :pagination="pagination"
           >
-            <template v-slot:body-cell-action="props">
-              <q-td :props="props">
-                <q-icon class="cursor-pointer" @click="edit(props.value,'groups')" name="fa fa-edit" color="primary" style="font-size:18px;margin-top:-5px" />
+            <template v-slot:header="props">
+              <q-tr :props="props">
+                <q-th
+                  v-for="col in props.cols"
+                  :key="col.name"
+                  :props="props"
+                  auto-width
+                >
+                  {{ col.label }}
+                </q-th>
+              </q-tr>
+            </template>
+            <template v-slot:body-cell="props">
+              <q-td :props="props" auto-width>
+                {{props.value}}
+                <!-- <q-badge color="blue" :label="props.value" /> -->
               </q-td>
             </template>
+
+            <template v-slot:body-cell-action="props">
+              <q-td :props="props" auto-width>
+                <q-icon class="cursor-pointer edit-icon" @click="edit(props.value,'groups')" name="fa fa-edit" color="primary" />
+              </q-td>
+            </template>
+
           </q-table>
       </div>
     </div>
