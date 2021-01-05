@@ -1,6 +1,6 @@
 <template>
   <q-page class="doks home">
-    <div class="container q-pa-lg">
+    <div class="container q-px-lg q-py-md">
       <div class="row justify-between">
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" />
