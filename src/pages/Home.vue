@@ -18,6 +18,7 @@
           :columns="usersColumns"
           row-key="id"
           :pagination="pagination"
+          :loading="dialog.user.loading"
           dense
         >
           <template v-slot:body-cell-action="props">
@@ -44,6 +45,7 @@
           :columns="groupsColumns"
           row-key="id"
           :pagination="pagination"
+          :loading="dialog.group.loading"
         >
           <template v-slot:body-cell-action="props">
             <q-td :props="props" auto-width>
@@ -61,7 +63,7 @@
               Create User
             </div>
             <q-space />
-            <q-btn dense flat icon="close" @click="addUserCancel()" v-close-popup>
+            <q-btn dense flat icon="close" :disable="loading" @click="addUserCancel()" v-close-popup>
               <q-tooltip>Close</q-tooltip>
             </q-btn>
           </q-bar>
@@ -73,7 +75,7 @@
                     First Name <span style="color:red;display:contents">*</span>
                   </div>
                   <div class="col-sm-8">
-                    <q-input v-model="dialog.user.first_name" dense class="q-my-md" outlined required /> 
+                    <q-input v-model="dialog.user.first_name" :disable="loading" dense class="q-my-md" outlined required /> 
                   </div>
                 </div>
                 <div class="row">
@@ -81,7 +83,7 @@
                     Last Name <span style="color:red;display:contents">*</span>
                   </div>
                   <div class="col-sm-8">
-                    <q-input v-model="dialog.user.last_name" dense class="q-my-md" outlined required /> 
+                    <q-input v-model="dialog.user.last_name" :disable="loading" dense class="q-my-md" outlined required /> 
                   </div>
                 </div>
                 <div class="row">
@@ -89,7 +91,7 @@
                     Email <span style="color:red;display:contents">*</span>
                   </div>
                   <div class="col-sm-8">
-                    <q-input type="email" v-model="dialog.user.email" dense class="q-my-md" outlined required /> 
+                    <q-input type="email" v-model="dialog.user.email" :disable="loading" dense class="q-my-md" outlined required /> 
                   </div>
                 </div>
                 <div class="row">
@@ -107,6 +109,7 @@
                       option-value="id"
                       @input="error.user.selectGroup = false"
                       :error="error.user.selectGroup"
+                      :disable="loading"
                     />
                   </div>
                 </div>
@@ -115,7 +118,7 @@
           </q-card-section>
           <q-card-actions>
             <div class="full-width row justify-end q-pb-sm q-pr-xs">
-              <q-btn @click="addUserCancel()" label="cancel and close" class="q-px-sm q-mr-md" />
+              <q-btn @click="addUserCancel()" :disable="loading" label="cancel and close" class="q-px-sm q-mr-md" />
               <q-btn type="submit" :loading="loading" :disable="loading" label="create" color="primary" class="q-px-sm q-mr-xs" />
             </div>
           </q-card-actions>
@@ -130,7 +133,7 @@
               Create Group
             </div>
             <q-space />
-            <q-btn dense flat icon="close" @click="addGroupCancel()" v-close-popup>
+            <q-btn dense flat icon="close" :disable="loading" @click="addGroupCancel()" v-close-popup>
               <q-tooltip>Close</q-tooltip>
             </q-btn>
           </q-bar>
@@ -142,7 +145,7 @@
                     Name <span style="color:red;display:contents">*</span>
                   </div>
                   <div class="col-sm-8">
-                    <q-input v-model="dialog.group.name" dense class="q-my-md" outlined required /> 
+                    <q-input v-model="dialog.group.name" :disable="loading" dense class="q-my-md" outlined required /> 
                   </div>
                 </div>
               </div>
@@ -150,7 +153,7 @@
           </q-card-section>
           <q-card-actions>
             <div class="full-width row justify-end q-pb-sm q-pr-xs">
-              <q-btn @click="addGroupCancel()" label="cancel and close" class="q-px-sm q-mr-md" />
+              <q-btn @click="addGroupCancel()" :disable="loading" label="cancel and close" class="q-px-sm q-mr-md" />
               <q-btn type="submit" :loading="loading" :disable="loading" label="create" color="primary" class="q-px-sm q-mr-xs" />
             </div>
           </q-card-actions>
@@ -217,6 +220,7 @@ export default {
     },
     clickAddUser(){
       this.loading = true
+      this.dialog.user.loading = true
       this.error.user.selectGroup = false
       if(this.dialog.user.group.id!="-1"){
         this.addUser()
@@ -228,10 +232,12 @@ export default {
         })
         this.error.user.selectGroup = true
         this.loading = false
+        this.dialog.user.loading = false
       }
     },
     clickAddGroup(){
       this.loading = true
+      this.dialog.group.loading = true
       this.addGroup()
     },
     addUser(){
@@ -248,13 +254,13 @@ export default {
           return
         } finally {
           this.loading = false
+          this.dialog.user.loading = false
         }
       }.bind(this),1000)
     },
     addGroup(){
       setTimeout(function(){
         try{
-          this.loading = true
           this.$store.dispatch("groups/add",this.dialog.group)
           this.addGroupCancel()
           this.$q.notify({
@@ -266,6 +272,7 @@ export default {
           return
         } finally {
           this.loading = false
+          this.dialog.group.loading = false
         }
       }.bind(this),1000)
     }
@@ -277,12 +284,13 @@ export default {
           selectGroup:false
         }
       },
-      loading:true,
+      loading:false,
       pagination:{
         rowsPerPage:10
       },
       dialog:{
         user:{
+          loading:false,
           show:false,
           first_name:"",
           last_name:"",
@@ -293,6 +301,7 @@ export default {
           },
         },
         group:{
+          loading:false,
           show:false,
           name:""
         }
