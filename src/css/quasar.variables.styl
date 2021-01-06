@@ -17,9 +17,122 @@ $secondary  = #26A69A
 $accent     = #9C27B0
 
 $dark       = #1D1D1D
-$light-grey = #EEE
 
 $positive   = #21BA45
 $negative   = #C10015
 $info       = #31CCEC
 $warning    = #F2C037
+
+$headings ?= {
+  h1: {
+    size: 6rem,
+    line-height: 6rem,
+    weight: 300,
+    letter-spacing: -.01562em
+  },
+  h2: {
+    size: 3.75rem,
+    line-height: 3.75rem,
+    letter-spacing: -.00833em,
+    weight: 300
+  },
+  h3: {
+    size: 3rem,
+    line-height: 3.125rem,
+    letter-spacing: normal,
+    weight: 400
+  },
+  h4: {
+    size: 2.125rem,
+    line-height: 2.5rem,
+    letter-spacing: .00735em,
+    weight: 400
+  },
+  h5: {
+    size: 1.5rem,
+    line-height: 2rem,
+    letter-spacing: normal,
+    weight: 400
+  },
+  h6: {
+    size: 1.25rem,
+    line-height: 2rem,
+    letter-spacing: .0125em,
+    weight: 500
+  },
+  subtitle1: {
+    //size: 1rem, // edited origin
+    size: 0.96rem, // edited new
+    line-height: 1.75rem,
+    letter-spacing: .00937em,
+    weight: 400,
+    color: #444 // edited new
+  },
+  subtitle2: {
+    size: .875rem,
+    line-height: 1.375rem,
+    letter-spacing: .00714em,
+    weight: 500
+  },
+  body1: {
+    size: 1rem,
+    line-height: 1.5rem,
+    letter-spacing: .03125em,
+    weight: 400
+  },
+  body2: {
+    size: .875rem,
+    line-height: 1.25rem,
+    letter-spacing: .01786em,
+    weight: 400
+  },
+  overline: {
+    size: .75rem,
+    line-height: 2rem,
+    letter-spacing: .16667em,
+    weight: 500
+  },
+  caption: {
+    size: .75rem,
+    line-height: 1.25rem,
+    letter-spacing: .03333em,
+    weight: 400
+  }
+}
+
+.q-icon,
+.material-icons,
+.material-icons-outlined,
+.material-icons-round,
+.material-icons-sharp
+    user-select: none
+    cursor: inherit
+    // font-size: inherit // edited origin
+    display: inline-flex
+    align-items: center
+    justify-content: center
+    vertical-align: middle
+    font-size: 15px // edited new
+
+.q-table
+    tbody tr:nth-child(odd) // edited new
+        background #f9f9f9 // edited new
+    thead tr // edited new
+        background #eee // edited new
+
+.q-table--dense
+    .q-table
+        th, td
+            // padding: 4px 8px // edited origin
+            padding: 10px 32px // edited new
+
+
+.text-
+    for $heading, $value in $headings
+        &{$heading}
+            font-size: $value.size
+            font-weight: $value.weight
+            line-height: $value.line-height
+            letter-spacing: $value.letter-spacing
+            color: $value.color || inherit
+

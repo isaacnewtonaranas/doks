@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import users from './users'
 import groups from './groups'
+import ips from './ips'
 
 Vue.use(Vuex)
 
@@ -19,6 +20,7 @@ export default function (/* { ssrContext } */) {
     modules: {
       users,
       groups,
+      ips,
     },
 
     // enable strict mode (adds overhead!)

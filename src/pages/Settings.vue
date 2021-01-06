@@ -1,61 +1,101 @@
 <template>
-  <q-page class="doks home">
+  <q-page class="doks settings">
     <div class="container q-px-lg q-py-md">
       <div class="row justify-between">
         <q-breadcrumbs>
           <q-breadcrumbs-el label="Home" />
-          <q-breadcrumbs-el label="Users" />
+          <q-breadcrumbs-el label="Settings" />
         </q-breadcrumbs>
       </div>
-      <div class="row header">
-          <div class="text-subtitle1 column justify-center q-pl-sm">{{countTable(users,"user")}}</div>
-          <div><q-btn @click="dialog.user.show = true" label="New User"/></div>
-      </div>
-      <div class="row q-mt-lg">
-        <q-table
-          class="table"
-          :data="users"
-          :columns="usersColumns"
-          row-key="id"
-          :pagination="pagination"
-          dense
-        >
-          <template v-slot:body-cell-action="props">
-            <q-td :props="props">
-              <q-icon class="cursor-pointer edit-icon" @click="edit(props.value,'users')" name="fa fa-edit" color="primary" />
-            </q-td>
-          </template>
-        </q-table>
+      <div class="row q-mt-xl">
+        <div class="row  q-mt-lg tab-panels" style="position:relative">
+          <q-separator />
+          <q-tab-panels v-model="tab" animated transition-prev="fade" transition-next="fade">
+            <q-tab-panel name="whitelist">
+              <div class="tab-panel-container">
+                <q-form @submit="submitAddIP()">
+                  <p class="text-subtitle1">Add single IP address or a CIDR-notated range of addresses</p>
+                  <div class="row q-pb-md">
+                    <div style="width:350px;">
+                      <q-input v-model="ip.address" required dense outlined label="enter IP address or a CIDP notation" />
+                    </div>
+                  </div>
+                  <div class="row q-pb-md justify-start">
+                    <div class="q-mr-md" style="width:350px;">
+                      <q-input v-model="ip.comment" dense outlined label="Optional comment describing this entry" />
+                    </div>
+                    <q-btn :loading="loading" :disable="loading" type="submit" label="add" color="primary"/>
+                  </div>
+                  <q-table
+                    dense
+                    class="q-mt-lg"
+                    :data="ips"
+                    :columns="ipsColumns"
+                    row-key="id"
+                    :pagination="pagination"
+                    :loading="loading"
+                  >
+                    <template v-slot:body-cell-action="props">
+                      <q-td :props="props">
+                        <q-icon
+                          :loading="loading"
+                          :disable="loading"
+                          class="cursor-pointer edit-icon"
+                          @click="deleteIP(props.value)"
+                          name="fa fa-trash-alt"
+                          color="primary"
+                        />
+                      </q-td>
+                    </template>
+                  </q-table>
+                </q-form>
+              </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="themes">
+              <div class="tab-panel-container">
+
+              </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="customize">
+              <div class="tab-panel-container">
+
+              </div>
+            </q-tab-panel>
+
+            <q-tab-panel name="export">
+              <div class="tab-panel-container">
+
+              </div>
+            </q-tab-panel>
+            
+          </q-tab-panels>
+          <q-tabs
+            v-model="tab"
+            dense
+            class="text-grey"
+            active-color="grey-7"
+            indicator-color="white"
+            align="justify"
+          >
+            <q-tab name="whitelist" label="Whitelist" />
+            <q-tab name="themes" label="Themes" />
+            <q-tab name="customize" label="Customize" />
+            <q-tab name="export" label="Export" />
+          </q-tabs>
+
+        </div>
       </div>
       <div class="q-my-xl"></div>
       <div class="row header">
-        <div class="text-subtitle1 column justify-center q-pl-sm">
-          {{countTable(groups,"group")}}
-        </div>
-        <div>
-          <q-btn @click="dialog.group.show = true" label="New Group"/>
-        </div>
       </div>
-      <div class="row q-mt-lg">
-        <q-table
-          dense
-          class="table"
-          :data="groups"
-          :columns="groupsColumns"
-          row-key="id"
-          :pagination="pagination"
-        >
-          <template v-slot:body-cell-action="props">
-            <q-td :props="props" auto-width>
-              <q-icon class="cursor-pointer edit-icon" @click="edit(props.value,'groups')" name="fa fa-edit" color="primary" />
-            </q-td>
-          </template>
-        </q-table>
+      <div class="row tab-panels">
       </div>
     </div>
     <q-dialog v-model="dialog.user.show"  persistent>
       <q-card style="min-width:600px">
-        <q-form @submit="clickAddUser()">
+        <q-form @submit="submitAddUser()">
           <q-bar>
             <div class="text-subtitle1" style="margin-top:3px">
               Create User
@@ -124,7 +164,7 @@
     </q-dialog>
     <q-dialog v-model="dialog.group.show"  persistent>
       <q-card style="min-width:600px">
-        <q-form @submit="clickAddGroup()">
+        <q-form @submit="submitAddGroup()">
           <q-bar>
             <div class="text-subtitle1" style="margin-top:3px">
               Create Group
@@ -160,7 +200,7 @@
   </q-page>
 </template>
 <script>
-import { debounce } from 'quasar'
+import {debounce} from 'quasar'
 export default {
   computed:{
     groupsStatus:{
@@ -178,6 +218,11 @@ export default {
         return this.$store.getters['groups/data']
       }
     },
+    ips:{
+      get(){
+        return this.$store.getters['ips/data']
+      }
+    },
     users:{
       get(){
         return this.$store.getters['users/data']
@@ -188,6 +233,8 @@ export default {
     this.loading = false
     this.addUser = debounce(this.addUser,1000)
     this.addGroup = debounce(this.addGroup,1000)
+    this.addIP = debounce(this.addIP,1000)
+    this.deleteIP = debounce(this.deleteIP,1000)
   },
   methods:{
     countTable(table,label){
@@ -215,7 +262,13 @@ export default {
         name:""
       }
     },
-    clickAddUser(){
+    addIPCancel(){
+      this.ip = {
+        address:'',
+        comment:''
+      }
+    },
+    submitAddUser(){
       this.loading = true
       this.error.user.selectGroup = false
       if(this.dialog.user.group.id!="-1"){
@@ -230,9 +283,13 @@ export default {
         this.loading = false
       }
     },
-    clickAddGroup(){
+    submitAddGroup(){
       this.loading = true
       this.addGroup()
+    },
+    submitAddIP(){
+      this.loading = true
+      this.addIP()
     },
     addUser(){
       setTimeout(function(){
@@ -268,10 +325,51 @@ export default {
           this.loading = false
         }
       }.bind(this),1000)
-    }
+    },
+    addIP(){
+      this.loading = true
+      setTimeout(function(){
+        try{
+          this.$store.dispatch("ips/add",this.ip)
+          this.$q.notify({
+            position:"top-right",
+            message: this.ip.address+" was successfully added!",
+            color: 'green-5'
+          })
+          this.addIPCancel()
+        } catch(error) {
+          return
+        } finally {
+          this.loading = false
+        }
+      }.bind(this),1000)
+    },
+    deleteIP(id){
+      setTimeout(function(){
+        try{
+          this.loading = true
+          this.$store.dispatch("ips/delete",id)
+          this.$q.notify({
+            position:"top-right",
+            message: 'An IP was removed!',
+            color: 'green-5'
+          })
+          this.addIPCancel()
+        } catch(error) {
+          return
+        } finally {
+          this.loading = false
+        }
+      }.bind(this),1000)
+    },
   },
   data() {
     return {
+      ip:{
+        address:'',
+        comment:''
+      },
+      tab: 'whitelist',
       error:{
         user:{
           selectGroup:false
@@ -341,6 +439,30 @@ export default {
           align: 'left',
         },
       ],
+      ipsColumns: [
+        {
+          name: 'ip_address',
+          required: true,
+          label: 'IP Address',
+          align: 'left',
+          field: (row) => row.address,
+          sortable: true,
+        },
+        {
+          name: 'comment',
+          required: true,
+          label: 'Comment',
+          align: 'left',
+          field: (row) => row.comment,
+          sortable: true,
+        },
+        {
+          name: 'action',
+          label: 'Action',
+          field: 'id',
+          align: 'left',
+        },
+      ],
       groupsColumns: [
         {
           name: 'name',
@@ -348,7 +470,6 @@ export default {
           label: 'Name',
           align: 'left',
           field: (row) => row.name,
-          format: (val) => `${val}`,
           sortable: true,
         },
         {

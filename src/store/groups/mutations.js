@@ -4,8 +4,9 @@ function addZero(num) {
 export default {
   add(state, payload) {
     var d = new Date()
+    let new_id = state.data[state.data.length - 1]
     state.data.push({
-      id: state.data.length,
+      id: new_id ? new_id.id + 1 : 1,
       name: payload.name,
       status: 1,
       created_on:

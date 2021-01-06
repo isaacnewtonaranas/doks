@@ -16,11 +16,25 @@
     <q-drawer class="left-menu" show-if-above v-model="left" :width="114" side="left" bordered>
       <div>
         <!-- <q-icon color="primary" stack name="fab fa-empire" /> -->
-        <q-btn class="btn bg-primary logo no-border-radius" flat stack color="white" icon="fab fa-empire"/>
-        <q-btn class="btn q-pt-lg q-pb-md" flat stack color="primary" label="Home" icon="fa fa-home"/>
-        <q-btn class="btn q-pt-lg q-pb-md" flat stack color="primary" label="Users" icon="fa fa-users"/>
-        <q-btn class="btn q-pt-lg q-pb-md" flat stack color="primary" label="Analytics" icon="fa fa-chart-bar"/>
-        <q-btn class="btn q-pt-lg q-pb-md" flat stack color="primary" label="Settings" icon="fa fa-sliders-h"/>
+        <q-btn
+          class="btn bg-primary logo no-border-radius"
+          flat
+          stack
+          color="white"
+          icon="fab fa-empire"
+          @click="left = false"
+        />
+        <q-btn
+          :key="i"
+          v-for="(link,i) in links"
+          @click="$router.push({name:link.name}).catch(err => {err})"
+          class="btn q-pt-lg q-pb-md"
+          flat
+          stack
+          color="primary"
+          :label="link.label"
+          :icon="link.icon"
+        />
       </div>
       
       <q-btn class="btn q-pt-md q-pb-sm q-mt-md" flat stack color="primary" label="Girish" icon="far fa-user-circle"/>
@@ -51,7 +65,29 @@ export default {
   data () {
     return {
       showLeftDrawerButton:true,
-      left: false
+      left: false,
+      links:[
+        {
+          name:"home",
+          icon:"fa fa-home",
+          label:"Home"
+        },
+        {
+          name:"home",
+          icon:"fa fa-users",
+          label:"Users"
+        },
+        {
+          name:"home",
+          icon:"fa fa-chart-bar",
+          label:"Analytics"
+        },
+        {
+          name:"settings",
+          icon:"fa fa-sliders-h",
+          label:"settings"
+        }
+      ]
     }
   }
 }
@@ -59,7 +95,7 @@ export default {
 <style lang="stylus">
 .left-menu
   .q-drawer
-    background $light-grey
+    background $grey-3
   .btn
     width 100%
   .q-drawer__content
