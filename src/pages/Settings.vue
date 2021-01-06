@@ -54,7 +54,18 @@
 
             <q-tab-panel name="themes">
               <div class="tab-panel-container">
-
+                <div class="row choose-theme" v-for="(theme,i) in themes" :key="i">
+                  <div>
+                    <q-icon name="far fa-image" style="font-size: 100px;" color="primary" />
+                  </div>
+                  <div class="title">
+                    <span class='text-body1'>{{theme.title}}</span>
+                    <br>
+                    <router-link :to="theme.link" class="text-primary">
+                      <span class='text-body1 text-primary' >(click here to preview)</span>
+                    </router-link>
+                  </div>
+                </div>
               </div>
             </q-tab-panel>
 
@@ -87,11 +98,6 @@
 
         </div>
       </div>
-      <div class="q-my-xl"></div>
-      <div class="row header">
-      </div>
-      <div class="row tab-panels">
-      </div>
     </div>
   </q-page>
 </template>
@@ -105,67 +111,31 @@ export default {
       }
     }
   },
-  mounted(){
-    this.loading = false
-    this.addUser = debounce(this.addUser,1000)
-    this.addGroup = debounce(this.addGroup,1000)
-    this.addIP = debounce(this.addIP,1000)
-    this.deleteIP = debounce(this.deleteIP,1000)
-  },
-  methods:{
-    addIPCancel(){
-      this.ip = {
-        address:'',
-        comment:''
-      }
-    },
-    submitAddIP(){
-      this.loading = true
-      this.tables.ip.loading = true
-      this.addIP()
-    },
-    submitdeleteIP(id){
-      this.tables.ip.loading = true
-      this.deleteIP(id)
-    },
-    addIP(){
-      setTimeout(function(){
-        try{
-          this.$store.dispatch("ips/add",this.ip)
-          this.$q.notify({
-            position:"top-right",
-            message: this.ip.address+" was successfully added!",
-            color: 'green-5'
-          })
-          this.addIPCancel()
-        } catch(error) {
-          return
-        } finally {
-          this.tables.ip.loading = false
-          this.loading = false
-        }
-      }.bind(this),1000)
-    },
-    deleteIP(id){
-      setTimeout(function(){
-        try{
-          this.$store.dispatch("ips/delete",id)
-          this.$q.notify({
-            position:"top-right",
-            message: 'An IP was removed!',
-            color: 'green-5'
-          })
-          this.addIPCancel()
-        } catch(error) {
-          return
-        } finally {
-          this.tables.ip.loading = false
-        }
-      }.bind(this),1000)
-    },
-  },
   data() {
     return {
+      themes:[
+        {
+          icon:"",
+          title:"Classic",
+          link:{
+            name:"home"
+          },
+        },
+        {
+          icon:"",
+          title:"Corporate",
+          link:{
+            name:"home"
+          },
+        },
+        {
+          icon:"",
+          title:"Minimalist",
+          link:{
+            name:"home"
+          },
+        }
+      ],
       tables:{
         ip:{
           loading:false
@@ -175,7 +145,7 @@ export default {
         address:'',
         comment:''
       },
-      tab: 'whitelist',
+      tab: 'themes',
       error:{
         user:{
           selectGroup:false
@@ -311,6 +281,65 @@ export default {
         },
       ],
     }
+  },
+  mounted(){
+    this.loading = false
+    this.addUser = debounce(this.addUser,1000)
+    this.addGroup = debounce(this.addGroup,1000)
+    this.addIP = debounce(this.addIP,1000)
+    this.deleteIP = debounce(this.deleteIP,1000)
+  },
+  methods:{
+    addIPCancel(){
+      this.ip = {
+        address:'',
+        comment:''
+      }
+    },
+    submitAddIP(){
+      this.loading = true
+      this.tables.ip.loading = true
+      this.addIP()
+    },
+    submitdeleteIP(id){
+      this.tables.ip.loading = true
+      this.deleteIP(id)
+    },
+    addIP(){
+      setTimeout(function(){
+        try{
+          this.$store.dispatch("ips/add",this.ip)
+          this.$q.notify({
+            position:"top-right",
+            message: this.ip.address+" was successfully added!",
+            color: 'green-5'
+          })
+          this.addIPCancel()
+        } catch(error) {
+          return
+        } finally {
+          this.tables.ip.loading = false
+          this.loading = false
+        }
+      }.bind(this),1000)
+    },
+    deleteIP(id){
+      setTimeout(function(){
+        try{
+          this.$store.dispatch("ips/delete",id)
+          this.$q.notify({
+            position:"top-right",
+            message: 'An IP was removed!',
+            color: 'green-5'
+          })
+          this.addIPCancel()
+        } catch(error) {
+          return
+        } finally {
+          this.tables.ip.loading = false
+        }
+      }.bind(this),1000)
+    },
   }
 }
 </script>
