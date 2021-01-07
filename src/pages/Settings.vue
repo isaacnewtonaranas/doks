@@ -70,7 +70,7 @@
             </q-tab-panel>
 
             <q-tab-panel name="customize">
-              <div class="tab-panel-container">
+              <div class="tab-panel-container scroll">
                 <div class="big-window customize">
                   <div class="chips-column">
                     <q-chip
