@@ -71,7 +71,26 @@
 
             <q-tab-panel name="customize">
               <div class="tab-panel-container">
-
+                <div class="big-window customize">
+                  <div class="chips-column">
+                    <q-chip
+                      dense
+                      size="xl"
+                      icon="fa fa-caret-right"
+                      text-color="white"
+                      color="grey-6"
+                    >
+                      <div class="full-width row justify-between">
+                        <div class="item1 text-body1 text-dark">
+                          Menu 1
+                        </div>
+                        <div class="item2">
+                          <q-icon class="icon-right" name="fa fa-edit" dense flat />
+                        </div>
+                      </div>
+                    </q-chip>
+                  </div>
+                </div>
               </div>
             </q-tab-panel>
 
@@ -145,7 +164,7 @@ export default {
         address:'',
         comment:''
       },
-      tab: 'themes',
+      tab: 'customize',
       error:{
         user:{
           selectGroup:false
