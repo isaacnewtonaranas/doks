@@ -80,9 +80,24 @@
                       text-color="white"
                       color="grey-6"
                     >
-                      <div class="full-width row justify-between">
+                      <div class="items row justify-between">
                         <div class="item1 text-body1 text-dark">
                           Menu 1
+                        </div>
+                        <div class="item2">
+                          <q-icon class="icon-right" name="fa fa-edit" dense flat />
+                        </div>
+                      </div>
+                    </q-chip>
+                    <q-chip
+                      dense
+                      size="xl"
+                      text-color="white"
+                      color="grey-4"
+                    >
+                      <div class="items row justify-between">
+                        <div class="item1 text-body1 text-dark">
+                          item 11
                         </div>
                         <div class="item2">
                           <q-icon class="icon-right" name="fa fa-edit" dense flat />
@@ -96,7 +111,12 @@
 
             <q-tab-panel name="export">
               <div class="tab-panel-container">
-
+                <div class="row q-ma-lg" v-for="(action,i) in exportTab.actions" :key="i">
+                  <q-btn class="q-px-lg" :icon="action.icon" outlined dense :label="action.label" />
+                  <div class="q-pa-sm q-ml-md text-body1">
+                    {{action.descriptions}}
+                  </div>
+                </div>
               </div>
             </q-tab-panel>
             
@@ -132,6 +152,26 @@ export default {
   },
   data() {
     return {
+      exportTab:{
+        actions:[
+          {
+            icon:"far fa-file-pdf",
+            label:"download as PDFs",
+            descriptions:"Click to download all articles of KB as PDFs"
+          },
+          {
+            icon:"far fa-file-code",
+            label:"download as HTMLs",
+            descriptions:"Click to download all articles of KB as HTML pages"
+          },
+          {
+            icon:"far fa-file-alt",
+            label:"download as JSONs",
+            descriptions:"Click to download all articles of KB as JSON data"
+          }
+        ]
+        
+      },
       themes:[
         {
           icon:"",
@@ -164,7 +204,7 @@ export default {
         address:'',
         comment:''
       },
-      tab: 'customize',
+      tab: 'export',
       error:{
         user:{
           selectGroup:false
