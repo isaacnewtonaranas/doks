@@ -78,7 +78,7 @@ export default {
           label:"Users"
         },
         {
-          name:"home",
+          name:"analytics",
           icon:"fa fa-chart-bar",
           label:"Analytics"
         },
