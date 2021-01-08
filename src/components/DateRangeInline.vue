@@ -1,6 +1,6 @@
 <template>
     <div class="row q-gutter-md">
-        <q-input :dense="dense" :outlined="outlined" v-model="date.model.from" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+        <q-input :dense="dense" :outlined="outlined" v-model="date.model.from" placeholder="yyyy/mm/dd" mask="date">
             <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">
@@ -14,7 +14,7 @@
             </template>
         </q-input>
         <span class="q-mt-lg">-</span>
-        <q-input :dense="dense" :outlined="outlined" v-model="date.model.to" placeholder="yyyy/mm/dd" mask="date" :rules="['date']">
+        <q-input :dense="dense" :outlined="outlined" v-model="date.model.to" placeholder="yyyy/mm/dd" mask="date">
             <template v-slot:append>
             <q-icon name="event" class="cursor-pointer">
                 <q-popup-proxy ref="qDateProxy" transition-show="scale" transition-hide="scale">

@@ -23,13 +23,14 @@
       </div>
       <div class="row">
         <q-table
-          style="min-width:510px"
+          style="min-width:530px"
           class="table"
           title="Searches"
           :data="searches"
           :columns="searchesColumns"
           row-key="id"
           :pagination="pagination"
+          :rows-per-page-options="itemsPerPage"
           dense
         >
           <template v-slot:top-right>
@@ -41,13 +42,14 @@
           </template>
         </q-table>
         <q-table
-          style="min-width:510px;margin-left:50px"
+          style="min-width:530px;margin-left:30px"
           class="table"
           title="Search with no results"
           :data="searches"
           :columns="searchesColumns"
           row-key="id"
           :pagination="pagination"
+          :rows-per-page-options="itemsPerPage"
           dense
         >
           <template v-slot:top-right>
@@ -68,38 +70,13 @@ export default {
   components: {
     DateRangeInline: () => import('../components/DateRangeInline.vue')
   },
-  computed:{
-    groupsStatus:{
-      get(){
-        return this.$store.getters['groups/status']
-      }
-    },
-  },
   mounted(){
     this.loading = false
-    this.addUser = debounce(this.addUser,1000)
-    this.addGroup = debounce(this.addGroup,1000)
-  },
-  methods:{
-    countTable(table,label){
-      return table.length + " " + label + (table.length > 1 ? "s" : "")
-    },
-    edit(value,table){
-      console.log(value)
-      console.log(table)
-    },
   },
   data() {
     return {
       filter: '',
       itemsPerPage:[20,50,100],
-      // pagination: {
-      //   sortBy: 'desc',
-      //   descending: false,
-      //   page: 1,
-      //   rowsPerPage: 3,
-      //   rowsNumber: 10
-      // },
       searchesColumns:[
         {
           name: 'query',
@@ -177,14 +154,9 @@ export default {
           value:"8%"
         }
       ],
-      error:{
-        user:{
-          selectGroup:false
-        }
-      },
       loading:false,
       pagination:{
-        rowsPerPage:10
+        rowsPerPage:20
       },
     }
   }

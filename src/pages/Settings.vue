@@ -205,75 +205,10 @@ export default {
         comment:''
       },
       tab: 'export',
-      error:{
-        user:{
-          selectGroup:false
-        }
-      },
       loading:true,
       pagination:{
         rowsPerPage:10
       },
-      dialog:{
-        user:{
-          show:false,
-          first_name:"",
-          last_name:"",
-          email:"",
-          group:{
-            name:"Default",
-            id:"-1"
-          },
-        },
-        group:{
-          show:false,
-          name:""
-        }
-      },
-      usersColumns: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Name',
-          align: 'left',
-          field: (row) => row.name,
-          sortable: true,
-        },
-        {
-          name: 'email',
-          align: 'left',
-          label: 'Email',
-          field: 'email',
-          sortable: true,
-        },
-        {
-          name: 'status',
-          label: 'Status',
-          field: (row) => this.usersStatus[row.status],
-          sortable: true,
-          align: 'left',
-        },
-        {
-          name: 'group',
-          label: 'Group',
-          field: (row) => this.groups[row.group].name,
-          sortable: true,
-          align: 'left',
-        },
-        {
-          name: 'created-on',
-          label: 'Created On',
-          field: 'created_on',
-          align: 'left',
-          sortable: true,
-        },
-        {
-          name: 'action',
-          label: 'Action',
-          field: 'id',
-          align: 'left',
-        },
-      ],
       ipsColumns: [
         {
           name: 'ip_address',
@@ -298,53 +233,10 @@ export default {
           align: 'left',
         },
       ],
-      groupsColumns: [
-        {
-          name: 'name',
-          required: true,
-          label: 'Name',
-          align: 'left',
-          field: (row) => row.name,
-          sortable: true,
-        },
-        {
-          name: 'no_of_users',
-          required: true,
-          label: 'No. of users',
-          align: 'left',
-          field: (row) => this.users.filter((u) => u.group == row.id).length,
-          sortable: true,
-        },
-        {
-          name: 'status',
-          required: true,
-          label: 'Status',
-          align: 'left',
-          field: (row) => this.groupsStatus[row.status],
-          sortable: true,
-        },
-        {
-          name: 'created_on',
-          required: true,
-          label: 'Created On',
-          align: 'left',
-          field: 'created_on',
-          sortable: true,
-        },
-        {
-          name: 'action',
-          required: true,
-          label: 'Action',
-          align: 'left',
-          field: 'id',
-        },
-      ],
     }
   },
   mounted(){
     this.loading = false
-    this.addUser = debounce(this.addUser,1000)
-    this.addGroup = debounce(this.addGroup,1000)
     this.addIP = debounce(this.addIP,1000)
     this.deleteIP = debounce(this.deleteIP,1000)
   },
