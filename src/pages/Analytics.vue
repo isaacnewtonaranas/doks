@@ -23,7 +23,6 @@
       </div>
       <div class="row">
         <q-table
-          style="min-width:530px"
           class="table"
           title="Searches"
           :data="searches"
@@ -42,10 +41,29 @@
           </template>
         </q-table>
         <q-table
-          style="min-width:530px;margin-left:30px"
           class="table"
           title="Search with no results"
           :data="searches"
+          :columns="searchesColumns"
+          row-key="id"
+          :pagination="pagination"
+          :rows-per-page-options="itemsPerPage"
+          dense
+        >
+          <template v-slot:top-right>
+            <q-input v-model="filter" borderless dense debounce="300" placeholder="Search">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
+      </div>
+      <div class="row">
+        <q-table
+          class="table"
+          title="Most Active Users"
+          :data="mostActiveUsers"
           :columns="searchesColumns"
           row-key="id"
           :pagination="pagination"
@@ -101,6 +119,23 @@ export default {
           align: 'left',
           field: 'total_search_percent',
           sortable: true,
+        },
+      ],
+      mostActiveUsers:[
+        {
+          query:"Maddy Kumar",
+          count:"40",
+          total_search_percent:"50%",
+        },
+        {
+          query:"Girish Rathor",
+          count:"30",
+          total_search_percent:"30%",
+        },
+        {
+          query:"Shasha Mahta",
+          count:"20",
+          total_search_percent:"10%",
         },
       ],
       searches:[
@@ -162,3 +197,9 @@ export default {
   }
 }
 </script>
+<style lang="stylus" scoped>
+.table
+  min-width 530px
+  margin-right 30px
+  margin-bottom 30px
+</style>
